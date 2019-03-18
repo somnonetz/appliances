@@ -2,7 +2,7 @@
 
 set -eu
 
-IMAGE=docker.io/somnonetz/stanford-narcolepsy:dev
+IMAGE=docker.io/somnonetz/pn-tds-biosignals2csv:dev
 
 docker build --pull -t ${IMAGE} .
 docker run --rm -u 1000:1000 ${IMAGE} red-connector-ssh --version
