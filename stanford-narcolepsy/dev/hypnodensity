@@ -1,0 +1,72 @@
+#!/usr/bin/env python3
+
+from argparse import ArgumentParser
+
+import pandas as pd
+from inf_config import AppConfig
+from inf_narco_app import NarcoApp
+
+
+def main():
+    parser = ArgumentParser(
+        description='Wrapper script to export hypnodensity raw data from the Stanford Narcolepsy app. Channel indices start with zero.'
+    )
+
+    parser.add_argument(
+        'edf_file', action='store', type=str, metavar='EDFFILE',
+        help='EDFFILE containing PSG.'
+    )
+    parser.add_argument(
+        'eeg_central', action='store', type=int, metavar='EEG_CENTRAL',
+        help='Channel index of C3 or C4 EEG in EDFFILE.'
+    )
+    parser.add_argument(
+        'eeg_occipital', action='store', type=int, metavar='EEG_OCCIPITAL',
+        help='Channel index of O1 or O2 EEG in EDFFILE.'
+    )
+    parser.add_argument(
+        'eog_left', action='store', type=int, metavar='EOG_LEFT',
+        help='Channel index of left EOG in EDFFILE.'
+    )
+    parser.add_argument(
+        'eog_right', action='store', type=int, metavar='EOG_RIGHT',
+        help='Channel index of right EOG in EDFFILE.'
+    )
+    parser.add_argument(
+        'emg_chin', action='store', type=int, metavar='EMG_CHIN',
+        help='Channel index of chin EMG in EDFFILE.'
+    )
+    parser.add_argument(
+        '--lights-off', action='store', type=int, metavar='EPOCH',
+        help='Epoch of lights being turned off.'
+    )
+    parser.add_argument(
+        '--lights-on', action='store', type=int, metavar='EPOCH',
+        help='Epoch of lights being turned on.'
+    )
+
+    args = parser.parse_args()
+
+    app_config = AppConfig()
+
+    app_config.edf_path = args.edf_file
+    app_config.channels_used['C3'] = args.eeg_central
+    app_config.channels_used['O1'] = args.eeg_occipital
+    app_config.channels_used['EOG-L'] = args.eog_left
+    app_config.channels_used['EOG-R'] = args.eog_right
+    app_config.channels_used['EMG'] = args.emg_chin
+
+    app_config.lightsOff = args.lights_off if args.lights_off is not None else []
+    app_config.lightsOn = args.lights_on if args.lights_on is not None else []
+
+    narco_app = NarcoApp(app_config)
+    narco_app.eval_hypnodensity()
+
+    hypnodensity = narco_app.get_hypnodensity()
+
+    df = pd.DataFrame(hypnodensity, columns=['W', 'N1', 'N2', 'N3', 'REM'])
+    df.to_csv("hypnodensity.csv")
+
+
+if __name__ == '__main__':
+    main()
