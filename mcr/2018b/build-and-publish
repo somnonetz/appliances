@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+set -eu
+
+IMAGE=docker.io/somnonetz/mcr:2018b
+
+docker build --pull -t ${IMAGE} .
+docker push ${IMAGE}
