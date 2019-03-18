@@ -8,16 +8,16 @@ RUN apt-get update \
 USER cc
 
 # install connectors
-ENV PATH=/home/cc/.local/red/bin:${PATH}
+ENV PATH /home/cc/.local/bin:${PATH}
 
 RUN python3 -m venv /home/cc/.local/red \
 && . /home/cc/.local/red/bin/activate \
 && pip install wheel \
-&& pip install red-connector-http==0.3 red-connector-ssh==0.5 red-connector-xnat==0.9
+&& pip install red-connector-http==0.3 red-connector-ssh==0.5 red-connector-xnat==0.9 \
+&& mkdir -p /home/cc/.local/bin \
+&& ln -s /home/cc/.local/red/bin/red-connector-* /home/cc/.local/bin
 
 # install app
-ENV PATH /home/cc/.local/bin:${PATH}
-
 RUN mkdir -p /home/cc/.local/bin \
 && cd /home/cc/.local/bin \
 && curl -OL https://github.com/somnonetz/physiological-networks-tds/releases/download/csvhpn-1.0/run_pn_tds_biosignalscsv_hypnogram.sh \
