@@ -4,7 +4,7 @@ from argparse import ArgumentParser
 
 import pandas as pd
 from inf_config import AppConfig
-from inf_narco_app import NarcoApp
+from inf_narco_app import NarcoApp, renderHypnodensity
 
 
 def main():
@@ -17,23 +17,31 @@ def main():
         help='EDFFILE containing PSG.'
     )
     parser.add_argument(
-        'eeg_central', action='store', type=int, metavar='EEG_CENTRAL',
-        help='Channel index of C3 or C4 EEG in EDFFILE.'
+        '--central3', action='store', type=int, metavar='EEG_CENTRAL3',
+        help='Channel index of EEG C3 in EDFFILE.'
     )
     parser.add_argument(
-        'eeg_occipital', action='store', type=int, metavar='EEG_OCCIPITAL',
-        help='Channel index of O1 or O2 EEG in EDFFILE.'
+        '--central4', action='store', type=int, metavar='EEG_CENTRAL4',
+        help='Channel index of EEG C4 in EDFFILE.'
     )
     parser.add_argument(
-        'eog_left', action='store', type=int, metavar='EOG_LEFT',
+        '--occipital1', action='store', type=int, metavar='EEG_OCCIPITAL1',
+        help='Channel index of EEG O1 in EDFFILE.'
+    )
+    parser.add_argument(
+        '--occipital2', action='store', type=int, metavar='EEG_OCCIPITAL2',
+        help='Channel index of EEG O2 in EDFFILE.'
+    )
+    parser.add_argument(
+        '--eog-l', action='store', type=int, metavar='EOG_LEFT',
         help='Channel index of left EOG in EDFFILE.'
     )
     parser.add_argument(
-        'eog_right', action='store', type=int, metavar='EOG_RIGHT',
+        '--eog-r', action='store', type=int, metavar='EOG_RIGHT',
         help='Channel index of right EOG in EDFFILE.'
     )
     parser.add_argument(
-        'emg_chin', action='store', type=int, metavar='EMG_CHIN',
+        '--chin-emg', action='store', type=int, metavar='CHIN_EMG',
         help='Channel index of chin EMG in EDFFILE.'
     )
     parser.add_argument(
@@ -49,12 +57,41 @@ def main():
 
     app_config = AppConfig()
 
+    channel_categories = {
+        'central': 'C3',
+        'central3': 'C3',
+        'central4': 'C4',
+        'centrals': ('C3', 'C4'),
+        'occipital': 'O1',
+        'occipital1': 'O1',
+        'occipital2': 'O2',
+        'occipitals': ('O1', 'O2'),
+        'eog_l': 'EOG-L',
+        'eog_r': 'EOG-R',
+        'eogs': ('EOG-L', 'EOG-R'),
+        'chin_emg': 'EMG'
+    }
+
+    channel_indices = {
+        'central3': args.central3,
+        'central4': args.central4,
+        'occipital1': args.occipital1,
+        'occipital2': args.occipital2,
+        'eog_l': args.eog_l,
+        'eog_r': args.eog_r,
+        'chin_emg': args.chin_emg
+    }
+
+    for channel_category, channel_index in channel_indices.items():
+        channel_label = channel_categories.get(channel_category, None)
+        if channel_label is not None:
+            if type(channel_index) is list or type(channel_index) is tuple:
+                for i in range(len(channel_index)):
+                    app_config.channels_used[channel_label[i]] = channel_index[i]
+            else:
+                app_config.channels_used[channel_label] = channel_index
+
     app_config.edf_path = args.edf_file
-    app_config.channels_used['C3'] = args.eeg_central
-    app_config.channels_used['O1'] = args.eeg_occipital
-    app_config.channels_used['EOG-L'] = args.eog_left
-    app_config.channels_used['EOG-R'] = args.eog_right
-    app_config.channels_used['EMG'] = args.emg_chin
 
     app_config.lightsOff = args.lights_off if args.lights_off is not None else []
     app_config.lightsOn = args.lights_on if args.lights_on is not None else []
@@ -63,6 +100,10 @@ def main():
     narco_app.eval_hypnodensity()
 
     hypnodensity = narco_app.get_hypnodensity()
+
+    narco_app.save_hypnogram(fileName='hypnogram.txt')
+    narco_app.save_hypnodensity(fileName='hypnodensity.txt')
+    renderHypnodensity(hypnodensity, showPlot=False, savePlot=True, fileName='hypnodensity.pdf')
 
     df = pd.DataFrame(hypnodensity, columns=['W', 'N1', 'N2', 'N3', 'REM'])
     df.to_csv("hypnodensity.csv")
