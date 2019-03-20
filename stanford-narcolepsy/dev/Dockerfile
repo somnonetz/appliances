@@ -1,7 +1,7 @@
-FROM docker.io/tensorflow/tensorflow:1.9.0-gpu-py3
+FROM docker.io/ubuntu:18.04
 
 RUN apt-get update \
-&& apt-get install -y git python3-pip python3-venv libffi-dev libssl-dev python3-dev \
+&& apt-get install -y unzip curl python3-pip python3-venv \
 && useradd -ms /bin/bash cc
 
 # switch user
@@ -19,13 +19,7 @@ RUN python3 -m venv /home/cc/.local/red \
 && ln -s /home/cc/.local/red/bin/red-connector-* /home/cc/.local/bin
 
 # install app
-ENV PYTHONPATH=/home/cc/.local/lib/python3.5/site-packages/:/home/cc/narco:/usr/local/lib/python3.5/dist-packages
-
-RUN pip3 install --user pyedflib==0.1.13 gpflow==1.2.0 pywavelets==1.0.1 samplerate==0.1.0 scikit-image==0.14.2 \
-&& mkdir -p ~/.config/matplotlib \
-&& echo "backend: agg" > ~/.config/matplotlib/matplotlibrc \
-&& curl -L https://github.com/Stanford-STAGES/stanford-stages/archive/81613b61c61d0f3b4586c87b6617b4d09d228d8a.zip \
-> /home/cc/app.zip \
+RUN curl -L https://github.com/Stanford-STAGES/stanford-stages/archive/81613b61c61d0f3b4586c87b6617b4d09d228d8a.zip > /home/cc/app.zip \
 && curl -L https://www.informaton.org/narco/ml/ac.zip > /home/cc/ac.zip \
 && curl -L https://www.informaton.org/narco/ml/gp.zip > /home/cc/gp.zip \
 && curl -L https://www.informaton.org/narco/ml/scaling.zip > /home/cc/scaling.zip \
@@ -40,7 +34,19 @@ RUN pip3 install --user pyedflib==0.1.13 gpflow==1.2.0 pywavelets==1.0.1 sampler
 && rm /home/cc/app.zip \
 && rm /home/cc/ac.zip \
 && rm /home/cc/gp.zip \
-&& rm /home/cc/scaling.zip \
-&& sed -i 's/\.\/ml\//\/home\/cc\/narco\/ml\//g' /home/cc/narco/*.py
+&& rm /home/cc/scaling.zip
+
+RUN pip3 install --user tensorflow==1.13.1
+RUN pip3 install --user pyedflib==0.1.13 gpflow==1.2.0 pywt==1.0.6 samplerate==0.1.0 scikit-image==0.14.2
+
+ENV PYTHONPATH=/home/cc/.local/lib/python3.6/site-packages
+
+#RUN mkdir -p ~/.config/matplotlib \
+#&& echo "backend: agg" > ~/.config/matplotlib/matplotlibrc
+
 
 ADD --chown=cc:cc ./hypnodensity /home/cc/.local/bin/hypnodensity
+
+
+
+#&& sed -i 's/\.\/ml\//\/home\/cc\/narco\/ml\//g' /home/cc/narco/*.py

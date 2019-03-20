@@ -1,17 +1,20 @@
 #!/usr/bin/env python3
 
+import os
+import json
+import shutil
 from argparse import ArgumentParser
+from subprocess import call
 
-import pandas as pd
-from inf_config import AppConfig
-from inf_narco_app import NarcoApp, renderHypnodensity
+
+INPUT_FILE_NAME = 'result.edf'
+APP_DIR = '/home/cc/narco'
 
 
 def main():
     parser = ArgumentParser(
         description='Wrapper script to export hypnodensity raw data from the Stanford Narcolepsy app. Channel indices start with zero.'
     )
-
     parser.add_argument(
         'edf_file', action='store', type=str, metavar='EDFFILE',
         help='EDFFILE containing PSG.'
@@ -44,69 +47,39 @@ def main():
         '--chin-emg', action='store', type=int, metavar='CHIN_EMG',
         help='Channel index of chin EMG in EDFFILE.'
     )
-    parser.add_argument(
-        '--lights-off', action='store', type=int, metavar='EPOCH',
-        help='Epoch of lights being turned off.'
-    )
-    parser.add_argument(
-        '--lights-on', action='store', type=int, metavar='EPOCH',
-        help='Epoch of lights being turned on.'
-    )
 
     args = parser.parse_args()
 
-    app_config = AppConfig()
-
-    channel_categories = {
-        'central': 'C3',
-        'central3': 'C3',
-        'central4': 'C4',
-        'centrals': ('C3', 'C4'),
-        'occipital': 'O1',
-        'occipital1': 'O1',
-        'occipital2': 'O2',
-        'occipitals': ('O1', 'O2'),
-        'eog_l': 'EOG-L',
-        'eog_r': 'EOG-R',
-        'eogs': ('EOG-L', 'EOG-R'),
-        'chin_emg': 'EMG'
+    dict_args = {
+        'channel_indices': {
+            'central3': args.central3,
+            'central4': args.central4,
+            'occipital1': args.occipital1,
+            'occipital2': args.occipital2,
+            'eog_l': args.eog_l,
+            'eog_r': args.eog_r,
+            'chin_emg': args.chin_emg
+        },
+        'show': {
+            'plot': False,
+            'hypnodensity': False,
+            'hypnogram': False,
+            'diagnosis': False
+        },
+        'save': {
+            'plot': True,
+            'hypnodensity': True,
+            'hypnogram': True,
+            'diagnosis': False
+        }
     }
 
-    channel_indices = {
-        'central3': args.central3,
-        'central4': args.central4,
-        'occipital1': args.occipital1,
-        'occipital2': args.occipital2,
-        'eog_l': args.eog_l,
-        'eog_r': args.eog_r,
-        'chin_emg': args.chin_emg
-    }
-
-    for channel_category, channel_index in channel_indices.items():
-        channel_label = channel_categories.get(channel_category, None)
-        if channel_label is not None:
-            if type(channel_index) is list or type(channel_index) is tuple:
-                for i in range(len(channel_index)):
-                    app_config.channels_used[channel_label[i]] = channel_index[i]
-            else:
-                app_config.channels_used[channel_label] = channel_index
-
-    app_config.edf_path = args.edf_file
-
-    app_config.lightsOff = args.lights_off if args.lights_off is not None else []
-    app_config.lightsOn = args.lights_on if args.lights_on is not None else []
-
-    narco_app = NarcoApp(app_config)
-    narco_app.eval_hypnodensity()
-
-    hypnodensity = narco_app.get_hypnodensity()
-
-    narco_app.save_hypnogram(fileName='hypnogram.txt')
-    narco_app.save_hypnodensity(fileName='hypnodensity.txt')
-    renderHypnodensity(hypnodensity, showPlot=False, savePlot=True, fileName='hypnodensity.pdf')
-
-    df = pd.DataFrame(hypnodensity, columns=['W', 'N1', 'N2', 'N3', 'REM'])
-    df.to_csv("hypnodensity.csv")
+    working_dir = os.getcwd()
+    shutil.move(args.edf_file, INPUT_FILE_NAME)
+    input_file_path = os.path.join(working_dir, INPUT_FILE_NAME)
+    os.chdir(APP_DIR)
+    call(['python3', 'inf_narco_app.py', input_file_path, json.dumps(dict_args)])
+    os.chdir(working_dir)
 
 
 if __name__ == '__main__':
