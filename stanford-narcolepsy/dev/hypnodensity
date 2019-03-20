@@ -2,7 +2,7 @@
 
 import os
 import json
-import shutil
+import hashlib
 from argparse import ArgumentParser
 from subprocess import call
 
@@ -75,7 +75,16 @@ def main():
     }
 
     working_dir = os.getcwd()
-    shutil.move(args.edf_file, INPUT_FILE_NAME)
+    os.symlink(args.edf_file, INPUT_FILE_NAME)
+
+    hashed = hashlib.md5()
+    with open(args.edf_file, 'rb') as f:
+        for chunk in iter(lambda: f.read(4096), b''):
+            hashed.update(chunk)
+
+    with open(os.path.join(working_dir, 'result.md5.txt'), 'w') as f:
+        print(hashed.hexdigest(), file=f)
+
     input_file_path = os.path.join(working_dir, INPUT_FILE_NAME)
     os.chdir(APP_DIR)
     call(['python3', 'inf_narco_app.py', input_file_path, json.dumps(dict_args)])
