@@ -1,4 +1,4 @@
-FROM docker.io/tensorflow/tensorflow:1.13.1-py3
+FROM docker.io/tensorflow/tensorflow:1.13.1-gpu-py3
 
 RUN apt-get update \
 && apt-get install -y unzip curl python3-pip python3-venv python3-dev libffi-dev libssl-dev \

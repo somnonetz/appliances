@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -eu
+
+IMAGE=docker.io/somnonetz/stanford-narcolepsy:dev-gpu
+
+docker build --pull -t ${IMAGE} .
+docker run --rm -u 1000:1000 ${IMAGE} red-connector-ssh --version
+docker run --rm -u 1000:1000 ${IMAGE} red-connector-http --version
+docker run --rm -u 1000:1000 ${IMAGE} red-connector-xnat-http --version
+docker push ${IMAGE}
