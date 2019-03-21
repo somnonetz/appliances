@@ -1,0 +1,95 @@
+#!/usr/bin/env python3
+
+import os
+import json
+import hashlib
+from argparse import ArgumentParser
+from subprocess import call
+
+
+INPUT_FILE_NAME = 'result.edf'
+APP_DIR = '/home/cc/narco'
+
+
+def main():
+    parser = ArgumentParser(
+        description='Wrapper script to export hypnodensity raw data from the Stanford Narcolepsy app. Channel indices start with zero.'
+    )
+    parser.add_argument(
+        'edf_file', action='store', type=str, metavar='EDFFILE',
+        help='EDFFILE containing PSG.'
+    )
+    parser.add_argument(
+        '--central3', action='store', type=int, metavar='EEG_CENTRAL3',
+        help='Channel index of EEG C3 in EDFFILE.'
+    )
+    parser.add_argument(
+        '--central4', action='store', type=int, metavar='EEG_CENTRAL4',
+        help='Channel index of EEG C4 in EDFFILE.'
+    )
+    parser.add_argument(
+        '--occipital1', action='store', type=int, metavar='EEG_OCCIPITAL1',
+        help='Channel index of EEG O1 in EDFFILE.'
+    )
+    parser.add_argument(
+        '--occipital2', action='store', type=int, metavar='EEG_OCCIPITAL2',
+        help='Channel index of EEG O2 in EDFFILE.'
+    )
+    parser.add_argument(
+        '--eog-l', action='store', type=int, metavar='EOG_LEFT',
+        help='Channel index of left EOG in EDFFILE.'
+    )
+    parser.add_argument(
+        '--eog-r', action='store', type=int, metavar='EOG_RIGHT',
+        help='Channel index of right EOG in EDFFILE.'
+    )
+    parser.add_argument(
+        '--chin-emg', action='store', type=int, metavar='CHIN_EMG',
+        help='Channel index of chin EMG in EDFFILE.'
+    )
+
+    args = parser.parse_args()
+
+    dict_args = {
+        'channel_indices': {
+            'central3': args.central3,
+            'central4': args.central4,
+            'occipital1': args.occipital1,
+            'occipital2': args.occipital2,
+            'eog_l': args.eog_l,
+            'eog_r': args.eog_r,
+            'chin_emg': args.chin_emg
+        },
+        'show': {
+            'plot': False,
+            'hypnodensity': False,
+            'hypnogram': False,
+            'diagnosis': False
+        },
+        'save': {
+            'plot': True,
+            'hypnodensity': True,
+            'hypnogram': True,
+            'diagnosis': False
+        }
+    }
+
+    working_dir = os.getcwd()
+    os.symlink(args.edf_file, INPUT_FILE_NAME)
+
+    hashed = hashlib.md5()
+    with open(args.edf_file, 'rb') as f:
+        for chunk in iter(lambda: f.read(4096), b''):
+            hashed.update(chunk)
+
+    with open(os.path.join(working_dir, 'result.md5.txt'), 'w') as f:
+        print(hashed.hexdigest(), file=f)
+
+    input_file_path = os.path.join(working_dir, INPUT_FILE_NAME)
+    os.chdir(APP_DIR)
+    call(['python3', 'inf_narco_app.py', input_file_path, json.dumps(dict_args)])
+    os.chdir(working_dir)
+
+
+if __name__ == '__main__':
+    main()
