@@ -7,22 +7,23 @@ RUN apt-get update \
 # switch user
 USER cc
 
-# install connectors
+RUN  mkdir -p /home/cc/.local/bin
+
 ENV PATH /home/cc/.local/bin:${PATH}
 
+# install connectors
 RUN python3 -m venv /home/cc/.local/red \
 && . /home/cc/.local/red/bin/activate \
 && pip install wheel \
 && pip install red-connector-http==0.3 red-connector-ssh==0.5 red-connector-xnat==0.9 \
-&& mkdir -p /home/cc/.local/bin \
 && ln -s /home/cc/.local/red/bin/red-connector-* /home/cc/.local/bin
 
 # install app
 RUN mkdir -p /home/cc/.local/bin \
 && mkdir /home/cc/.config \
 && cd /home/cc/.local/bin \
-&& curl -OL https://github.com/somnonetz/psgScan2edfData/releases/download/1.3.0/run_sn_edfScan2edfData.sh \
-&& curl -OL https://github.com/somnonetz/psgScan2edfData/releases/download/1.3.0/sn_edfScan2edfData \
+&& curl -fOL https://github.com/somnonetz/psgScan2edfData/releases/download/v1.3.0/run_sn_edfScan2edfData.sh \
+&& curl -fOL https://github.com/somnonetz/psgScan2edfData/releases/download/v1.3.0/sn_edfScan2edfData \
 && chmod +x *sn_edfScan2edfData* \
 && cd /home/cc/.config \
-&& curl -OL https://github.com/somnonetz/psgScan2edfData/releases/download/1.2.0/psg_channelmap.txt
+&& curl -fOL https://github.com/somnonetz/psgScan2edfData/releases/download/1.2.0/psg_channelmap.txt
