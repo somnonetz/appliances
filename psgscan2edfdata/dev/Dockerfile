@@ -1,4 +1,4 @@
-FROM docker.io/somnonetz/mcr:2015a
+FROM docker.io/somnonetz/mcr:2018b
 
 RUN apt-get update \
 && apt-get install -y git python3-pip python3-venv libffi-dev libssl-dev python3-dev \
@@ -21,8 +21,8 @@ RUN python3 -m venv /home/cc/.local/red \
 RUN mkdir -p /home/cc/.local/bin \
 && mkdir /home/cc/.config \
 && cd /home/cc/.local/bin \
-&& curl -OL https://github.com/somnonetz/psgScan2edfData/releases/download/1.2.0/run_sn_edfScan2edfData.sh \
-&& curl -OL https://github.com/somnonetz/psgScan2edfData/releases/download/1.2.0/sn_edfScan2edfData \
+&& curl -OL https://github.com/somnonetz/psgScan2edfData/releases/download/1.3.0/run_sn_edfScan2edfData.sh \
+&& curl -OL https://github.com/somnonetz/psgScan2edfData/releases/download/1.3.0/sn_edfScan2edfData \
 && chmod +x *sn_edfScan2edfData* \
 && cd /home/cc/.config \
 && curl -OL https://github.com/somnonetz/psgScan2edfData/releases/download/1.2.0/psg_channelmap.txt
