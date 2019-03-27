@@ -22,8 +22,8 @@ RUN python3 -m venv /home/cc/.local/red \
 RUN mkdir -p /home/cc/.local/bin \
 && mkdir /home/cc/.config \
 && cd /home/cc/.local/bin \
-&& curl -fOL https://github.com/somnonetz/psgScan2edfData/releases/download/v1.3.0/run_sn_edfScan2edfData.sh \
-&& curl -fOL https://github.com/somnonetz/psgScan2edfData/releases/download/v1.3.0/sn_edfScan2edfData \
+&& curl -fOL https://github.com/somnonetz/psgScan2edfData/releases/download/v1.3.1/run_sn_edfScan2edfData.sh \
+&& curl -fOL https://github.com/somnonetz/psgScan2edfData/releases/download/v1.3.1/sn_edfScan2edfData \
 && chmod +x *sn_edfScan2edfData* \
 && cd /home/cc/.config \
 && curl -fOL https://github.com/somnonetz/psgScan2edfData/releases/download/1.2.0/psg_channelmap.txt
