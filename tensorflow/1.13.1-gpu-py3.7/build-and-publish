@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+set -eu
+
+IMAGE=docker.io/somnonetz/tensorflow:1.13.1-gpu-py3.7
+
+docker build --pull -t ${IMAGE} .
+docker run --rm -u 1000:1000 ${IMAGE} python --version
+docker push ${IMAGE}
