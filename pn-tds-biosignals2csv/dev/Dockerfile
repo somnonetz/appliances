@@ -13,7 +13,7 @@ ENV PATH /home/cc/.local/bin:${PATH}
 RUN python3 -m venv /home/cc/.local/red \
 && . /home/cc/.local/red/bin/activate \
 && pip install wheel \
-&& pip install red-connector-http==0.3 red-connector-ssh==0.5 red-connector-xnat==0.9 \
+&& pip install red-connector-http==0.6 red-connector-ssh==0.8 red-connector-xnat==0.12 \
 && mkdir -p /home/cc/.local/bin \
 && ln -s /home/cc/.local/red/bin/red-connector-* /home/cc/.local/bin
 
@@ -23,5 +23,3 @@ RUN mkdir -p /home/cc/.local/bin \
 && curl -OL https://github.com/somnonetz/physiological-networks-tds/releases/download/tds2csv-1.0/run_pn_tds_biosignals2csv.sh \
 && curl -OL https://github.com/somnonetz/physiological-networks-tds/releases/download/tds2csv-1.0/pn_tds_biosignals2csv \
 && chmod +x *pn_tds_biosignals2csv*
-
-ADD --chown=cc:cc pn-tds-biosignals2csv-wrapper /home/cc/.local/bin/pn-tds-biosignals2csv-wrapper
