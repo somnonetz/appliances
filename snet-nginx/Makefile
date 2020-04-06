@@ -4,7 +4,6 @@ IMG    := ${NAME}:${TAG}
 LATEST := ${NAME}:latest
  
 build:
-	echo ${IMG}
 	docker build -t ${IMG} .
 	docker tag ${IMG} ${LATEST}
  
@@ -12,4 +11,4 @@ push:
 	docker push ${NAME}
  
 login:
-	docker log -u ${DOCKER_USER} -p ${DOCKER_PASS}
+	docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
