@@ -5,13 +5,14 @@ ARG XNAT_ROOT=/data/xnat
 ARG XNAT_HOME=/data/xnat/home
 ARG XNAT_DATASOURCE_USERNAME=xnat
 ARG TOMCAT_XNAT_FOLDER=xnat
+ENV NODE_PATH=/usr/lib/node_modules
+ENV XNAT_HOME=${XNAT_HOME}
 
 ARG XNAT_PIPELINE_ENGINE_VER=1.7.6
 ARG SNET_PLUGIN_VER=0.1.2
 ARG SNET_PIPELINES_VER=0.1.1
 
-ENV NODE_PATH=/usr/lib/node_modules
-ENV XNAT_HOME=${XNAT_HOME}
+ARG ASCLEPIOS_SSE_CLIENT_VER=0.1.2
 
 ADD entrypoint.sh /usr/local/bin/entrypoint.sh
 
@@ -69,8 +70,8 @@ RUN apk add --no-cache \
         pyxnat \
     && \
     npm install -g \
-        asclepios-sse-client \
         argparse \
+        asclepios-sse-client@${ASCLEPIOS_SSE_CLIENT_VER} \
     && \
     wget https://github.com/NrgXnat/xnat-pipeline-engine/archive/${XNAT_PIPELINE_ENGINE_VER}.tar.gz && \
     tar -zxf ${XNAT_PIPELINE_ENGINE_VER}.tar.gz && \
