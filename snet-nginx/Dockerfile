@@ -1,6 +1,6 @@
 FROM nginx:1.13-alpine-perl
 
-ARG COPLA_EDITOR_VER=0.1.3
+ARG COPLA_EDITOR_VER=0.1.4
 ARG WEB_ROOT=/var/www
 
 RUN rm /etc/nginx/conf.d/default.conf
