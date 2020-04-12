@@ -1,10 +1,10 @@
 {
   "name": "upload-subject-to-sse",
   "label": "Upload Subject to SSE",
-  "description": "Upload subject data to the ASCLPIOS symmetric searchable encryption service",
+  "description": "Upload subject data to the ASCLEPIOS symmetric searchable encryption service",
   "version": "1.5",
   "schema-version": "1.0",
-  "image": "somnonetz/snet-xnat-asclepios-sse-client:latest",
+  "image": "somnonetz/snet-xnat-upload-subject-to-sse:latest",
   "type": "docker",
   "command-line": "upload_subject_data #SUBJECT#",
   "override-entrypoint": true,
@@ -123,7 +123,7 @@
     {
       "name": "upload-subject-to-sse",
       "label": "Upload Subject to SSE",
-      "description": "Upload subject data to the ASCLPIOS symmetric searchable encryption service",
+      "description": "Upload subject data to the ASCLEPIOS symmetric searchable encryption service",
       "contexts": [
         "xnat:subjectData"
       ],
