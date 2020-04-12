@@ -9,6 +9,7 @@ ENV NODE_PATH=/usr/lib/node_modules
 ENV XNAT_HOME=${XNAT_HOME}
 
 ARG XNAT_PIPELINE_ENGINE_VER=1.7.6
+ARG XNAT_CONTAINER_SERVICE_VER=2.1.1-SNAPSHOT
 ARG SNET_PLUGIN_VER=0.1.2
 ARG SNET_PIPELINES_VER=0.1.4
 ARG ASCLEPIOS_SSE_CLIENT_VER=0.1.2
@@ -42,6 +43,11 @@ RUN apk add --no-cache \
     cd ${TOMCAT_XNAT_FOLDER} && \
     unzip -o ../xnat-web-${XNAT_VER}.war && \
     rm -f ../xnat-web-${XNAT_VER}.war
+
+# install container services
+
+RUN wget https://bitbucket.org/xnatdev/container-service/downloads/containers-${XNAT_CONTAINER_SERVICE_VER}-fat.jar && \
+    mv containers-${XNAT_CONTAINER_SERVICE_VER}-fat.jar ${XNAT_HOME}/plugins
 
 # install snet-plugin
 
