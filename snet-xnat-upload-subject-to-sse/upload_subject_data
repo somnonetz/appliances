@@ -30,8 +30,15 @@ execFile(XnatDataClient, args, function callback(error, stdout, stderr) {
         console.error(stderr);
         throw error;
     }
+
     const response = JSON.parse(stdout);
+
+    const ID = response.items[0].data_fields.ID
+    const label = response.items[0].data_fields.label
     const data = response.items[0].children[0].items[0].data_fields;
 
-    uploadData(data, response.items[0].data_fields.ID, SSE_CLIENT_KEY_G, SSE_CLIENT_KENC);
+    data['ID'] = ID;
+    data['label'] = label;
+
+    uploadData(data, ID, SSE_CLIENT_KEY_G, SSE_CLIENT_KENC);
 });
