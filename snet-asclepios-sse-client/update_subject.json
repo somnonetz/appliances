@@ -1,12 +1,12 @@
 {
-  "name": "sse-upload-subject",
-  "label": "Upload Subject to ASCLEPIOS SSE",
-  "description": "Upload subject data to the ASCLEPIOS symmetric searchable encryption service",
+  "name": "sse-update-subject",
+  "label": "Update Subject on ASCLEPIOS SSE",
+  "description": "Update subject data on the ASCLEPIOS symmetric searchable encryption service",
   "version": "1.5",
   "schema-version": "1.0",
   "image": "somnonetz/snet-asclepios-sse-client:latest",
   "type": "docker",
-  "command-line": "upload_subject #SUBJECT#",
+  "command-line": "update_subject #SUBJECT#",
   "override-entrypoint": true,
   "mounts": [],
   "environment-variables": {
@@ -77,7 +77,7 @@
     },
     {
       "name": "kenc",
-      "description": "Symmetric key, which is shared between users who are allowed to upload/search data",
+      "description": "Symmetric key, which is shared between users who are allowed to update/search data",
       "type": "string",
       "matcher": null,
       "default-value": "123",
@@ -121,9 +121,9 @@
   "outputs": [],
   "xnat": [
     {
-      "name": "sse-upload-subject",
-      "label": "Upload Subject to ASCLEPIOS SSE",
-      "description": "Upload subject data to the ASCLEPIOS symmetric searchable encryption service",
+      "name": "sse-update-subject",
+      "label": "Update Subject on ASCLEPIOS SSE",
+      "description": "Update subject data on the ASCLEPIOS symmetric searchable encryption service",
       "contexts": [
         "xnat:subjectData"
       ],
