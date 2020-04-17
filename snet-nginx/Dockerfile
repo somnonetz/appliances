@@ -16,8 +16,8 @@ RUN apk add --no-cache wget ca-certificates && \
     tar -zxf sn-editor-${COPLA_EDITOR_VER}.tar.gz && \
     mv sn-editor /var/www/copla-editor && \
     rm -f sn-editor-${COPLA_EDITOR_VER}.tar.gz && \
-    wget https://github.com/somnonetz/snet-xnat-asclepios-search/archive/v${ASCLEPIOS_SEARCH_VER}/v${ASCLEPIOS_SEARCH_VER}.tar.gz && \
+    wget https://github.com/somnonetz/snet-asclepios-search/archive/v${ASCLEPIOS_SEARCH_VER}/v${ASCLEPIOS_SEARCH_VER}.tar.gz && \
     tar -zxf v${ASCLEPIOS_SEARCH_VER}.tar.gz && \
-    mv  snet-xnat-asclepios-search-${ASCLEPIOS_SEARCH_VER} /var/www/asclepios-search && \
+    mv  snet-asclepios-search-${ASCLEPIOS_SEARCH_VER} /var/www/asclepios-search && \
     rm -f v${ASCLEPIOS_SEARCH_VER}.tar.gz && \
     apk del wget
