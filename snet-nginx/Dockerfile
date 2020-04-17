@@ -1,6 +1,7 @@
 FROM nginx:1.13-alpine-perl
 
 ARG COPLA_EDITOR_VER=0.1.4
+ARG ASCLEPIOS_SEARCH_VER=0.1.0
 ARG WEB_ROOT=/var/www
 
 RUN rm /etc/nginx/conf.d/default.conf
@@ -15,4 +16,8 @@ RUN apk add --no-cache wget ca-certificates && \
     tar -zxf sn-editor-${COPLA_EDITOR_VER}.tar.gz && \
     mv sn-editor /var/www/copla-editor && \
     rm -f sn-editor-${COPLA_EDITOR_VER}.tar.gz && \
+    wget https://github.com/somnonetz/snet-xnat-asclepios-search/archive/v${ASCLEPIOS_SEARCH_VER}/v${ASCLEPIOS_SEARCH_VER}.tar.gz && \
+    tar -zxf v${ASCLEPIOS_SEARCH_VER}.tar.gz && \
+    mv  snet-xnat-asclepios-search-${ASCLEPIOS_SEARCH_VER} /var/www/asclepios-search && \
+    rm -f v${ASCLEPIOS_SEARCH_VER}.tar.gz && \
     apk del wget
