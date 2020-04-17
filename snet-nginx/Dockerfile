@@ -1,7 +1,7 @@
 FROM nginx:1.13-alpine-perl
 
 ARG COPLA_EDITOR_VER=0.1.4
-ARG ASCLEPIOS_SEARCH_VER=0.1.1
+ARG ASCLEPIOS_SEARCH_VER=0.1.1.1
 ARG WEB_ROOT=/var/www
 
 RUN rm /etc/nginx/conf.d/default.conf
