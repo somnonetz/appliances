@@ -38,7 +38,7 @@
       "description": "SSE server url",
       "type": "string",
       "matcher": null,
-      "default-value": "http://sse-server:8080",
+      "default-value": "http://sse:8080",
       "required": true,
       "replacement-key": "#SSE_SERVER_URL#",
       "sensitive": null,
@@ -148,6 +148,6 @@
       "output-handlers": []
     }
   ],
-  "network": "sse-front",
+  "network": "asclepios",
   "container-labels": {}
 }
