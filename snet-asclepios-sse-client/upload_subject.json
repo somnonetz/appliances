@@ -4,9 +4,9 @@
   "description": "Upload subject data to the ASCLEPIOS symmetric searchable encryption service",
   "version": "1.5",
   "schema-version": "1.0",
-  "image": "somnonetz/snet-xnat-upload-subject-to-sse:latest",
+  "image": "somnonetz/snet-asclepios-sse-client:latest",
   "type": "docker",
-  "command-line": "upload_subject_data #SUBJECT#",
+  "command-line": "upload_subject #SUBJECT#",
   "override-entrypoint": true,
   "mounts": [],
   "environment-variables": {

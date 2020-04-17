@@ -1,4 +1,4 @@
-NAME   := somnonetz/snet-xnat-upload-subject-to-sse
+NAME   := somnonetz/snet-asclepios-sse-client
 TAG    := $$(git log -1 --pretty=%H)
 IMG    := ${NAME}:${TAG}
 LATEST := ${NAME}:latest
