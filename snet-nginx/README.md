@@ -3,7 +3,10 @@
 
 nginx frontend proxy and static file server.
 
-includes a [pre-built copla-editor](https://github.com/somnonetz/copla-editor/tree/master/sn-editor) and a base nginx.conf.
+includes:
+* a base nginx.conf
+* [pre-built copla-editor](https://github.com/somnonetz/copla-editor/tree/master/sn-editor)
+* [pre-build snet-asclepios-search](https://github.com/somnonetz/snet-asclepios-search)
 
 ## Usage
 
