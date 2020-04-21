@@ -1,18 +1,14 @@
 FROM tomcat:7-jre8-alpine
 
 ARG XNAT_VER=1.7.6
+ARG XNAT_CONTAINER_SERVICE_VER=2.1.1-SNAPSHOT
+ARG SNET_PLUGIN_VER=0.1.3
 ARG XNAT_ROOT=/data/xnat
 ARG XNAT_HOME=/data/xnat/home
 ARG XNAT_DATASOURCE_USERNAME=xnat
 ARG TOMCAT_XNAT_FOLDER=xnat
 ENV NODE_PATH=/usr/lib/node_modules
 ENV XNAT_HOME=${XNAT_HOME}
-
-ARG XNAT_PIPELINE_ENGINE_VER=1.7.6
-ARG XNAT_CONTAINER_SERVICE_VER=2.1.1-SNAPSHOT
-ARG SNET_PLUGIN_VER=0.1.2
-ARG SNET_PIPELINES_VER=0.1.4
-ARG ASCLEPIOS_SSE_CLIENT_VER=0.1.2
 
 ADD entrypoint.sh /usr/local/bin/entrypoint.sh
 
@@ -44,7 +40,7 @@ RUN apk add --no-cache \
     unzip -o ../xnat-web-${XNAT_VER}.war && \
     rm -f ../xnat-web-${XNAT_VER}.war
 
-# install container services
+# install container service plugin
 
 RUN wget https://bitbucket.org/xnatdev/container-service/downloads/containers-${XNAT_CONTAINER_SERVICE_VER}-fat.jar && \
     mv containers-${XNAT_CONTAINER_SERVICE_VER}-fat.jar ${XNAT_HOME}/plugins
@@ -54,45 +50,9 @@ RUN wget https://bitbucket.org/xnatdev/container-service/downloads/containers-${
 RUN wget https://github.com/somnonetz/snet-plugin/releases/download/v${SNET_PLUGIN_VER}/snet-plugin-${SNET_PLUGIN_VER}.jar && \
     mv snet-plugin-${SNET_PLUGIN_VER}.jar ${XNAT_HOME}/plugins
 
-# install snet-pipeline
-
-ADD xnat-pipeline-engine-gradle.properties /tmp/xnat-pipeline-engine-${XNAT_PIPELINE_ENGINE_VER}/gradle.properties
-
-RUN apk add --no-cache \
-        build-base \
-        python3 \
-        libxml2 \
-        libxslt \
-        python3-dev \
-        libxml2-dev \
-        libxslt-dev \
-        nodejs \
-        nodejs-npm \
-    && \
-    pip3 install --no-cache-dir \
-        six \
-        edfrd \
-        pyxnat \
-    && \
-    npm install -g \
-        argparse \
-        asclepios-sse-client@${ASCLEPIOS_SSE_CLIENT_VER} \
-    && \
-    wget https://github.com/NrgXnat/xnat-pipeline-engine/archive/${XNAT_PIPELINE_ENGINE_VER}.tar.gz && \
-    tar -zxf ${XNAT_PIPELINE_ENGINE_VER}.tar.gz && \
-    rm -f ${XNAT_PIPELINE_ENGINE_VER}.tar.gz && \
-    wget https://github.com/somnonetz/snet-pipelines/archive/v${SNET_PIPELINES_VER}.tar.gz && \
-    tar -zxf v${SNET_PIPELINES_VER}.tar.gz && \
-    rm -f v${SNET_PIPELINES_VER}.tar.gz && \
-    mv snet-pipelines-${SNET_PIPELINES_VER} snet-pipelines && \
-    cd xnat-pipeline-engine-${XNAT_PIPELINE_ENGINE_VER} && \
-    ./gradlew && \
-    cd .. && \
-    rm -rf /tmp/snet-pipelines /tmp/xnat-pipeline-engine-${XNAT_PIPELINE_ENGINE_VER}
-
 # clean up
 
-RUN apk del wget build-base python3-dev libxml2-dev libxslt-dev nodejs-npm
+RUN apk del wget
 
 WORKDIR /
 
