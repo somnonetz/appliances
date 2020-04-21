@@ -4,7 +4,7 @@
   "description": "Extract EDF Header from PSG Recording and write metadata back to XNAT",
   "version": "1.5",
   "schema-version": "1.0",
-  "image": "somnonetz/snet-extract-edf-header:e53639d00b07234b67ebfce018271f7e9730e429",
+  "image": "somnonetz/snet-extract-edf-header:latest",
   "type": "docker",
   "command-line": "extract_edf_header --project #PROJECT# --subject #SUBJECT# --session #SESSION#",
   "override-entrypoint": true,
