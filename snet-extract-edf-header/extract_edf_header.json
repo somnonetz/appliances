@@ -1,0 +1,125 @@
+{
+  "name": "extract-edf-header",
+  "label": "Extract EDF Header",
+  "description": "Extract EDF Header from PSG Recording and write metadata back to XNAT",
+  "version": "1.5",
+  "schema-version": "1.0",
+  "image": "somnonetz/snet-extract-edf-header:e53639d00b07234b67ebfce018271f7e9730e429",
+  "type": "docker",
+  "command-line": "extract_edf_header --project #PROJECT# --subject #SUBJECT# --session #SESSION#",
+  "override-entrypoint": true,
+  "mounts": [],
+  "environment-variables": {},
+  "ports": {},
+  "inputs": [
+    {
+      "name": "project",
+      "description": "Input project",
+      "type": "string",
+      "matcher": null,
+      "default-value": null,
+      "required": true,
+      "replacement-key": "#PROJECT#",
+      "sensitive": null,
+      "command-line-flag": null,
+      "command-line-separator": null,
+      "true-value": null,
+      "false-value": null
+    },
+    {
+      "name": "subject",
+      "description": "Input subject",
+      "type": "string",
+      "matcher": null,
+      "default-value": null,
+      "required": true,
+      "replacement-key": "#SUBJECT#",
+      "sensitive": null,
+      "command-line-flag": null,
+      "command-line-separator": null,
+      "true-value": null,
+      "false-value": null
+    },
+    {
+      "name": "session",
+      "description": "Input session",
+      "type": "string",
+      "matcher": null,
+      "default-value": null,
+      "required": true,
+      "replacement-key": "#SESSION#",
+      "sensitive": null,
+      "command-line-flag": null,
+      "command-line-separator": null,
+      "true-value": null,
+      "false-value": null
+    }
+  ],
+  "outputs": [],
+  "xnat": [
+    {
+      "name": "extract-edf-header",
+      "label": "Extract EDF Header",
+      "description": "Extract EDF Header from PSG Recording and write metadata back to XNAT",
+      "contexts": [
+        "xnat:imageSessionData"
+      ],
+      "external-inputs": [
+        {
+          "name": "session",
+          "description": "Input session",
+          "type": "Session",
+          "matcher": null,
+          "default-value": null,
+          "required": true,
+          "replacement-key": null,
+          "sensitive": null,
+          "provides-value-for-command-input": "session",
+          "provides-files-for-command-mount": null,
+          "via-setup-command": null,
+          "user-settable": null,
+          "load-children": false
+        }
+      ],
+      "derived-inputs": [
+        {
+          "name": "project",
+          "description": null,
+          "type": "string",
+          "matcher": null,
+          "default-value": null,
+          "required": true,
+          "replacement-key": null,
+          "sensitive": null,
+          "provides-value-for-command-input": "project",
+          "provides-files-for-command-mount": null,
+          "user-settable": false,
+          "load-children": true,
+          "derived-from-wrapper-input": "session",
+          "derived-from-xnat-object-property": "project-id",
+          "via-setup-command": null
+        },
+        {
+          "name": "subject",
+          "description": null,
+          "type": "string",
+          "matcher": null,
+          "default-value": null,
+          "required": true,
+          "replacement-key": null,
+          "sensitive": null,
+          "provides-value-for-command-input": "subject",
+          "provides-files-for-command-mount": null,
+          "user-settable": false,
+          "load-children": true,
+          "derived-from-wrapper-input": "session",
+          "derived-from-xnat-object-property": "subject-id",
+          "via-setup-command": null
+        }
+      ],
+      "output-handlers": []
+    }
+  ],
+  "network": "snet-apps",
+  "container-labels": {}
+}
