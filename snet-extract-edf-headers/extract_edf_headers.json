@@ -1,12 +1,12 @@
 {
-  "name": "extract-edf-header",
-  "label": "Extract EDF Header",
-  "description": "Extract EDF Header from PSG Recording and write metadata back to XNAT",
+  "name": "extract-edf-headers",
+  "label": "Extract EDF Headers",
+  "description": "Extract EDF Headers from PSG Recording and write metadata back to XNAT",
   "version": "1.5",
   "schema-version": "1.0",
-  "image": "somnonetz/snet-extract-edf-header:latest",
+  "image": "somnonetz/snet-extract-edf-headers:latest",
   "type": "docker",
-  "command-line": "extract_edf_header --project #PROJECT# --subject #SUBJECT# --session #SESSION#",
+  "command-line": "extract_edf_headers --project #PROJECT# --subject #SUBJECT# --session #SESSION#",
   "override-entrypoint": true,
   "mounts": [],
   "environment-variables": {},
@@ -58,9 +58,9 @@
   "outputs": [],
   "xnat": [
     {
-      "name": "extract-edf-header",
-      "label": "Extract EDF Header",
-      "description": "Extract EDF Header from PSG Recording and write metadata back to XNAT",
+      "name": "extract-edf-headers",
+      "label": "Extract EDF Headers",
+      "description": "Extract EDF Headers from PSG Recording and write metadata back to XNAT",
       "contexts": [
         "xnat:imageSessionData"
       ],

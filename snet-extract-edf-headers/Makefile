@@ -1,4 +1,4 @@
-NAME   := somnonetz/snet-extract-edf-header
+NAME   := somnonetz/snet-extract-edf-headers
 TAG    := $$(git log -1 --pretty=%H)
 IMG    := ${NAME}:${TAG}
 LATEST := ${NAME}:latest
