@@ -13,10 +13,6 @@ if __name__ == "__main__":
     user = os.getenv('XNAT_USER')
     password = os.getenv('XNAT_PASS')
 
-    host = 'http://xnat:8080/xnat'
-    user = 'admin'
-    password = 'admin'
-
     parser = argparse.ArgumentParser()
     parser.add_argument('--project', required=True)
     parser.add_argument('--n', type=int, required=True)
