@@ -1,0 +1,40 @@
+#!/usr/bin/env python3
+
+import os
+import argparse
+import random
+import xnat
+from faker import Faker
+
+fake = Faker(['en_US'])
+
+if __name__ == "__main__":
+    host = os.getenv('XNAT_HOST')
+    user = os.getenv('XNAT_USER')
+    password = os.getenv('XNAT_PASS')
+
+    host = 'http://xnat:8080/xnat'
+    user = 'admin'
+    password = 'admin'
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--project', required=True)
+    parser.add_argument('--n', type=int, required=True)
+    args = parser.parse_args()
+
+    host = host.strip('/')  # remove trailing slash from host as pyxnat fails to connect if it's present
+    args.project = args.project.split('/')[-1] # parse out id (looks like /archive/project/<project_label>)
+
+    with xnat.connect(host, user=user, password=password) as session:
+        project = session.projects[args.project]
+    
+        for _ in range(args.n):
+            subject = session.classes.SubjectData(
+                parent=project,
+                label=fake.name().replace(' ', '_'),
+                dob=fake.date_between('-80y', '-10y'),
+                gender=random.choice(['male', 'female', 'other', 'unknown']),
+                height=random.randint(60, 84),
+                weight=random.randint(100, 250),
+                handedness=random.choice(['left', 'right', 'ambidextrous', 'unknown']),
+            )

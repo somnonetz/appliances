@@ -1,0 +1,75 @@
+{
+  "name": "populate-subjects",
+  "label": "Populate Subjects",
+  "description": "Populate a project with randomly generated subject data",
+  "version": "1.5",
+  "schema-version": "1.0",
+  "image": "somnonetz/snet-populate:latest",
+  "type": "docker",
+  "command-line": "populate_subjects --project #PROJECT# --n #NUM_SUBJECTS#",
+  "override-entrypoint": true,
+  "mounts": [],
+  "environment-variables": {},
+  "ports": {},
+  "inputs": [
+    {
+      "name": "project",
+      "description": "Input project",
+      "type": "string",
+      "matcher": null,
+      "default-value": null,
+      "required": true,
+      "replacement-key": "#PROJECT#",
+      "sensitive": null,
+      "command-line-flag": null,
+      "command-line-separator": null,
+      "true-value": null,
+      "false-value": null
+    },
+    {
+      "name": "num_subjects",
+      "description": "Number of subjects to generate",
+      "type": "number",
+      "matcher": null,
+      "default-value": null,
+      "required": true,
+      "replacement-key": "#NUM_SUBJECTS#",
+      "sensitive": null,
+      "command-line-flag": null,
+      "command-line-separator": null,
+      "true-value": null,
+      "false-value": null
+    }
+  ],
+  "outputs": [],
+  "xnat": [
+    {
+      "name": "populate-subjects",
+      "label": "Populate Subjects",
+      "description": "Populate a project with randomly generated subject data",
+      "contexts": [
+        "xnat:projectData"
+      ],
+      "external-inputs": [
+        {
+          "name": "project",
+          "description": "Input project",
+          "type": "Project",
+          "matcher": null,
+          "default-value": null,
+          "required": true,
+          "replacement-key": null,
+          "sensitive": null,
+          "provides-value-for-command-input": "project",
+          "provides-files-for-command-mount": null,
+          "via-setup-command": null,
+          "user-settable": null,
+          "load-children": false
+        }
+      ],
+      "output-handlers": []
+    }
+  ],
+  "network": "snet-apps",
+  "container-labels": {}
+}
