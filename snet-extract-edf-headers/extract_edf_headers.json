@@ -94,7 +94,7 @@
           "provides-value-for-command-input": "project",
           "provides-files-for-command-mount": null,
           "user-settable": false,
-          "load-children": true,
+          "load-children": false,
           "derived-from-wrapper-input": "session",
           "derived-from-xnat-object-property": "project-id",
           "via-setup-command": null
@@ -111,7 +111,7 @@
           "provides-value-for-command-input": "subject",
           "provides-files-for-command-mount": null,
           "user-settable": false,
-          "load-children": true,
+          "load-children": false,
           "derived-from-wrapper-input": "session",
           "derived-from-xnat-object-property": "subject-id",
           "via-setup-command": null

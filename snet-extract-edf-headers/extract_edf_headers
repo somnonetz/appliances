@@ -17,9 +17,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     host = host.strip('/')  # remove trailing slash from host as pyxnat fails to connect if it's present
-    args.project = args.project.split('/')[-1]  # parse out ID
-    args.subject = args.subject.split('/')[-1]
-    args.session = args.session.split('/')[-1]
+    args.session = args.session.split('/')[-1] # parse out id (looks like /archive/experiments/XNAT_EXXXXX)
 
     xnat = Interface(host, user=user, password=password)
     session = xnat.select(f'/project/{args.project}/subject/{args.subject}/experiment/{args.session}')
