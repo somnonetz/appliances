@@ -18,7 +18,6 @@ if __name__ == "__main__":
     parser.add_argument('--n', type=int, required=True)
     args = parser.parse_args()
 
-    host = host.strip('/')  # remove trailing slash from host as pyxnat fails to connect if it's present
     args.project = args.project.split('/')[-1] # parse out id (looks like /archive/project/<project_label>)
 
     with xnat.connect(host, user=user, password=password) as session:

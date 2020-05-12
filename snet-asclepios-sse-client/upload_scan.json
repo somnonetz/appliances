@@ -1,12 +1,12 @@
 {
-  "name": "sse-update-subject",
-  "label": "Update Subject on ASCLEPIOS SSE",
-  "description": "Update subject data on the ASCLEPIOS symmetric searchable encryption service",
+  "name": "sse-upload-scan",
+  "label": "Upload PSG Scan to ASCLEPIOS SSE",
+  "description": "Upload PSG scan data to the ASCLEPIOS symmetric searchable encryption service",
   "version": "1.5",
   "schema-version": "1.0",
   "image": "somnonetz/snet-asclepios-sse-client:latest",
   "type": "docker",
-  "command-line": "update_subject #SUBJECT#",
+  "command-line": "upload_scan #SESSION#",
   "override-entrypoint": true,
   "mounts": [],
   "environment-variables": {
@@ -20,13 +20,13 @@
   "ports": {},
   "inputs": [
     {
-      "name": "subject",
-      "description": "Input subject",
+      "name": "scan",
+      "description": "Input scan",
       "type": "string",
       "matcher": null,
       "default-value": null,
       "required": true,
-      "replacement-key": "#SUBJECT#",
+      "replacement-key": "#SESSION#",
       "sensitive": null,
       "command-line-flag": null,
       "command-line-separator": null,
@@ -77,7 +77,7 @@
     },
     {
       "name": "kenc",
-      "description": "Symmetric key, which is shared between users who are allowed to update/search data",
+      "description": "Symmetric key, which is shared between users who are allowed to upload/search data",
       "type": "string",
       "matcher": null,
       "default-value": "123",
@@ -121,23 +121,23 @@
   "outputs": [],
   "xnat": [
     {
-      "name": "sse-update-subject",
-      "label": "Update Subject on ASCLEPIOS SSE",
-      "description": "Update subject data on the ASCLEPIOS symmetric searchable encryption service",
+      "name": "sse-upload-scan",
+      "label": "Upload PSG Scan to ASCLEPIOS SSE",
+      "description": "Upload PSG scan data to the ASCLEPIOS symmetric searchable encryption service",
       "contexts": [
-        "xnat:subjectData"
+        "xnat:imageScanData"
       ],
       "external-inputs": [
         {
-          "name": "subject",
-          "description": "Input subject",
-          "type": "Subject",
+          "name": "scan",
+          "description": "Input scan",
+          "type": "Scan",
           "matcher": null,
           "default-value": null,
           "required": true,
           "replacement-key": null,
           "sensitive": null,
-          "provides-value-for-command-input": "subject",
+          "provides-value-for-command-input": "scan",
           "provides-files-for-command-mount": null,
           "via-setup-command": null,
           "user-settable": null,

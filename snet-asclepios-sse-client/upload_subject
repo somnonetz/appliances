@@ -23,7 +23,7 @@ if (!(XNAT_USER && XNAT_PASS && XNAT_HOST && SSE_CLIENT_SSE_SERVER_URL && SSE_CL
 
 const XnatDataClient = '/usr/bin/XnatDataClient'
 const path = process.argv[2]
-const args = ['-u', XNAT_USER, '-p', XNAT_PASS, '-r', `${XNAT_HOST}/REST/${path}/psg?format=json`];
+const args = ['-u', XNAT_USER, '-p', XNAT_PASS, '-r', `${XNAT_HOST}/REST${path}?format=json`];
 
 execFile(XnatDataClient, args, function callback(error, stdout, stderr) {
     if (error) {
