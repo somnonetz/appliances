@@ -6,56 +6,54 @@ from pyxnat import Interface
 from edfrd import read_header
 
 if __name__ == "__main__":
+    host = os.getenv('XNAT_HOST')
+    user = os.getenv('XNAT_USER')
+    password = os.getenv('XNAT_PASS')
+
     parser = argparse.ArgumentParser()
     parser.add_argument('--project', required=True)
     parser.add_argument('--subject', required=True)
     parser.add_argument('--session', required=True)
-
-    host = os.getenv('XNAT_HOST')
-    user = os.getenv('XNAT_USER')
-    password = os.getenv('XNAT_PASS')
+    parser.add_argument('--scan', required=True)
     args = parser.parse_args()
 
-    host = host.strip('/')  # remove trailing slash from host as pyxnat fails to connect if it's present
-    args.session = args.session.split('/')[-1] # parse out id (looks like /archive/experiments/XNAT_EXXXXX)
-
     xnat = Interface(host, user=user, password=password)
-    session = xnat.select(f'/project/{args.project}/subject/{args.subject}/experiment/{args.session}')
 
-    for scan in session.scans():
-        remote_edf = scan.resources().files().first()  # use first returned file only
-        edf_path = remote_edf.get(f'./{remote_edf.label()}')
-        edf_header = read_header(edf_path)
+    scan = xnat.select(f'/project/{args.project}/subject/{args.subject}/experiment/{args.session}/scan/{args.scan}')
+    remote_edf = xnat.select(f'/project/{args.project}/subject/{args.subject}/experiment/{args.session}/scan/{args.scan}/resource/EDF/file/{args.scan}.edf')
 
+    edf_path = remote_edf.get(f'./{remote_edf.label()}')
+    edf_header = read_header(edf_path)
+
+    scan.insert(**{
+        'scans': 'snet01:psgScanData',
+        'snet01:psgScanData/edfversion': edf_header.version,
+        'snet01:psgScanData/patientid': edf_header.local_patient_identification,
+        'snet01:psgScanData/localrecordid': edf_header.local_recording_identification,
+        'snet01:psgScanData/recordingstartdate': edf_header.startdate_of_recording,
+        'snet01:psgScanData/recordingstarttime': edf_header.starttime_of_recording,
+        'snet01:psgScanData/numberofheaderbytes': edf_header.number_of_bytes_in_header_record,
+        'snet01:psgScanData/reservedheaderfield': edf_header.reserved,
+        'snet01:psgScanData/numberofdatarecords': edf_header.number_of_data_records,
+        'snet01:psgScanData/durationofdatarecordseconds': edf_header.duration_of_a_data_record,
+        'snet01:psgScanData/numberofsignalsindatarecord': edf_header.number_of_signals,
+        'snet01:psgScanData/psgdevice': '_'.join(edf_header.local_recording_identification.split(' ')[4:]),
+        'snet01:psgScanData/durationofrecordhours': edf_header.duration_of_a_data_record / 3600,
+    })
+
+    for i, signal_header in enumerate(edf_header.signals):
         scan.insert(**{
             'scans': 'snet01:psgScanData',
-            'snet01:psgScanData/edfversion': edf_header.version,
-            'snet01:psgScanData/patientid': edf_header.local_patient_identification,
-            'snet01:psgScanData/localrecordid': edf_header.local_recording_identification,
-            'snet01:psgScanData/recordingstartdate': edf_header.startdate_of_recording,
-            'snet01:psgScanData/recordingstarttime': edf_header.starttime_of_recording,
-            'snet01:psgScanData/numberofheaderbytes': edf_header.number_of_bytes_in_header_record,
-            'snet01:psgScanData/reservedheaderfield': edf_header.reserved,
-            'snet01:psgScanData/numberofdatarecords': edf_header.number_of_data_records,
-            'snet01:psgScanData/durationofdatarecordseconds': edf_header.duration_of_a_data_record,
-            'snet01:psgScanData/numberofsignalsindatarecord': edf_header.number_of_signals,
-            'snet01:psgScanData/psgdevice': '_'.join(edf_header.local_recording_identification.split(' ')[4:]),
-            'snet01:psgScanData/durationofrecordhours': edf_header.duration_of_a_data_record / 3600,
+            'snet01:psgScanData/records/record/label': signal_header.label,
+            'snet01:psgScanData/records/record/channelnumber': i + 1,
+            'snet01:psgScanData/records/record/samplingrate': signal_header.nr_of_samples_in_each_data_record / edf_header.duration_of_a_data_record,
+            'snet01:psgScanData/records/record/transducertype': signal_header.transducer_type,
+            'snet01:psgScanData/records/record/physicaldimension': signal_header.physical_dimension,
+            'snet01:psgScanData/records/record/physicalminimum': signal_header.physical_minimum,
+            'snet01:psgScanData/records/record/physicalmaximum': signal_header.physical_maximum,
+            'snet01:psgScanData/records/record/digitalminimum': signal_header.digital_minimum,
+            'snet01:psgScanData/records/record/digitalmaximum': signal_header.digital_maximum,
+            'snet01:psgScanData/records/record/prefiltering': signal_header.prefiltering,
+            'snet01:psgScanData/records/record/samplesinrecord': signal_header.nr_of_samples_in_each_data_record,
+            'snet01:psgScanData/records/record/reserved': signal_header.reserved,
         })
-
-        for i, signal_header in enumerate(edf_header.signals):
-            scan.insert(**{
-                'scans': 'snet01:psgScanData',
-                'snet01:psgScanData/records/record/label': signal_header.label,
-                'snet01:psgScanData/records/record/channelnumber': i + 1,
-                'snet01:psgScanData/records/record/samplingrate': signal_header.nr_of_samples_in_each_data_record / edf_header.duration_of_a_data_record,
-                'snet01:psgScanData/records/record/transducertype': signal_header.transducer_type,
-                'snet01:psgScanData/records/record/physicaldimension': signal_header.physical_dimension,
-                'snet01:psgScanData/records/record/physicalminimum': signal_header.physical_minimum,
-                'snet01:psgScanData/records/record/physicalmaximum': signal_header.physical_maximum,
-                'snet01:psgScanData/records/record/digitalminimum': signal_header.digital_minimum,
-                'snet01:psgScanData/records/record/digitalmaximum': signal_header.digital_maximum,
-                'snet01:psgScanData/records/record/prefiltering': signal_header.prefiltering,
-                'snet01:psgScanData/records/record/samplesinrecord': signal_header.nr_of_samples_in_each_data_record,
-                'snet01:psgScanData/records/record/reserved': signal_header.reserved,
-            })

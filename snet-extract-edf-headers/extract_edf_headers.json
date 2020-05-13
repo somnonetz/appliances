@@ -4,9 +4,9 @@
   "description": "Extract EDF Headers from PSG Recording and write metadata back to XNAT",
   "version": "1.5",
   "schema-version": "1.0",
-  "image": "somnonetz/snet-extract-edf-headers:latest",
+  "image": "somnonetz/snet-extract-edf-headers:39af7629707caf1b826e257c7025b8fec0bedac1",
   "type": "docker",
-  "command-line": "extract_edf_headers --project #PROJECT# --subject #SUBJECT# --session #SESSION#",
+  "command-line": "extract_edf_headers --project #PROJECT# --subject #SUBJECT# --session #SESSION# --scan #SCAN#",
   "override-entrypoint": true,
   "mounts": [],
   "environment-variables": {},
@@ -53,6 +53,20 @@
       "command-line-separator": null,
       "true-value": null,
       "false-value": null
+    },
+    {
+      "name": "scan",
+      "description": "Input scan",
+      "type": "string",
+      "matcher": null,
+      "default-value": null,
+      "required": true,
+      "replacement-key": "#SCAN#",
+      "sensitive": null,
+      "command-line-flag": null,
+      "command-line-separator": null,
+      "true-value": null,
+      "false-value": null
     }
   ],
   "outputs": [],
@@ -62,19 +76,19 @@
       "label": "Extract EDF Headers",
       "description": "Extract EDF Headers from PSG Recording and write metadata back to XNAT",
       "contexts": [
-        "xnat:imageSessionData"
+        "xnat:imageScanData"
       ],
       "external-inputs": [
         {
-          "name": "session",
-          "description": "Input session",
-          "type": "Session",
+          "name": "scan",
+          "description": "Input scan",
+          "type": "Scan",
           "matcher": null,
           "default-value": null,
           "required": true,
           "replacement-key": null,
           "sensitive": null,
-          "provides-value-for-command-input": "session",
+          "provides-value-for-command-input": null,
           "provides-files-for-command-mount": null,
           "via-setup-command": null,
           "user-settable": null,
@@ -83,7 +97,24 @@
       ],
       "derived-inputs": [
         {
-          "name": "project",
+          "name": "session",
+          "description": null,
+          "type": "Session",
+          "matcher": null,
+          "default-value": null,
+          "required": true,
+          "replacement-key": null,
+          "sensitive": null,
+          "provides-value-for-command-input": "session",
+          "provides-files-for-command-mount": null,
+          "user-settable": null,
+          "load-children": false,
+          "derived-from-wrapper-input": "scan",
+          "derived-from-xnat-object-property": null,
+          "via-setup-command": null
+        },
+        {
+          "name": "project-id",
           "description": null,
           "type": "string",
           "matcher": null,
@@ -100,7 +131,7 @@
           "via-setup-command": null
         },
         {
-          "name": "subject",
+          "name": "subject-id",
           "description": null,
           "type": "string",
           "matcher": null,
@@ -114,6 +145,40 @@
           "load-children": false,
           "derived-from-wrapper-input": "session",
           "derived-from-xnat-object-property": "subject-id",
+          "via-setup-command": null
+        },
+        {
+          "name": "session-id",
+          "description": null,
+          "type": "string",
+          "matcher": null,
+          "default-value": null,
+          "required": true,
+          "replacement-key": null,
+          "sensitive": null,
+          "provides-value-for-command-input": "session",
+          "provides-files-for-command-mount": null,
+          "user-settable": false,
+          "load-children": false,
+          "derived-from-wrapper-input": "session",
+          "derived-from-xnat-object-property": "id",
+          "via-setup-command": null
+        },
+        {
+          "name": "scan-id",
+          "description": null,
+          "type": "string",
+          "matcher": null,
+          "default-value": null,
+          "required": true,
+          "replacement-key": null,
+          "sensitive": null,
+          "provides-value-for-command-input": "scan",
+          "provides-files-for-command-mount": null,
+          "user-settable": false,
+          "load-children": false,
+          "derived-from-wrapper-input": "scan",
+          "derived-from-xnat-object-property": "id",
           "via-setup-command": null
         }
       ],
