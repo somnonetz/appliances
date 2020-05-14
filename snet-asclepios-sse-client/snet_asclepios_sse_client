@@ -1,0 +1,62 @@
+#!/usr/bin/env node
+'use strict'
+
+const { execFile } = require('child_process');
+const { uploadData } = require('asclepios-sse-client');
+
+const {
+    XNAT_USER,
+    XNAT_PASS,
+    XNAT_HOST,
+    SSE_CLIENT_SSE_SERVER_URL,
+    SSE_CLIENT_TA_URL,
+    SSE_CLIENT_KEY_G,
+    SSE_CLIENT_KENC,
+    SSE_CLIENT_SALT_VALUE,
+    SSE_CLIENT_IV_VALUE
+} = process.env;
+
+if (!(
+    XNAT_USER
+    && XNAT_PASS
+    && XNAT_HOST
+    && SSE_CLIENT_SSE_SERVER_URL
+    && SSE_CLIENT_KEY_G
+    && SSE_CLIENT_KENC
+    && SSE_CLIENT_TA_URL
+    && SSE_CLIENT_SALT_VALUE
+    && SSE_CLIENT_IV_VALUE
+)) {
+    throw 'One or more of the following environment variables are not set: ' + `
+        XNAT_USER: ${XNAT_USER}
+        XNAT_PASS: ${XNAT_PASS}
+        XNAT_HOST: ${XNAT_HOST}
+        SSE_CLIENT_SSE_SERVER_URL: ${SSE_CLIENT_SSE_SERVER_URL}
+        SSE_CLIENT_KEY_G: ${SSE_CLIENT_KEY_G}
+        SSE_CLIENT_KENC: ${SSE_CLIENT_KENC}
+        SSE_CLIENT_TA_URL: ${SSE_CLIENT_TA_URL}
+        SSE_CLIENT_SALT_VALUE: ${SSE_CLIENT_SALT_VALUE}
+        SSE_CLIENT_IV_VALUE: ${SSE_CLIENT_IV_VALUE}
+    `;
+}
+
+const XnatDataClient = '/usr/bin/XnatDataClient'
+const method = process.argv[2]
+const path = process.argv[3]
+const type = process.argv[4]
+
+execFile(XnatDataClient, ['-u', XNAT_USER, '-p', XNAT_PASS, '-r', `${XNAT_HOST}/REST${path}?format=json`], (error, stdout, stderr) => {
+    if (error) {
+        console.error(stderr);
+        throw error;
+    }
+
+    switch(method) {
+        case 'upload':
+            const data = { type: type, body: Buffer.from(stdout).toString('base64') };
+            uploadData(data, path, SSE_CLIENT_KEY_G, SSE_CLIENT_KENC);
+            break;
+        default:
+            throw `${method} is not a valid method`
+    }
+});

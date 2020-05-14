@@ -15,5 +15,4 @@ RUN npm install -g \
 RUN wget https://bitbucket.org/xnatdev/data-client/downloads/XnatDataClient-${XNAT_DATA_CLIENT_VERSION}-all.jar -O /opt/XnatDataClient.jar
 
 ADD XnatDataClient /usr/bin/XnatDataClient
-ADD upload_subject /usr/bin/upload_subject
-ADD upload_scan /usr/bin/upload_scan
+ADD snet_asclepios_sse_client /usr/bin/snet_asclepios_sse_client
