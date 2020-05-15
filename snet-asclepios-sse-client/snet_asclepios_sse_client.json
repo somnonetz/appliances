@@ -1,0 +1,278 @@
+{
+    "name": "snet-asclepios-sse-client",
+    "label": "Asclepios SSE Client",
+    "description": "Add and remove xnat objects to/from the Asclepios SSE Service",
+    "version": "1.5",
+    "schema-version": "1.0",
+    "image": "somnonetz/snet-asclepios-sse-client:latest",
+    "type": "docker",
+    "command-line": "snet_asclepios_sse_client #METHOD# #URI# #TYPE#",
+    "override-entrypoint": true,
+    "mounts": [],
+    "environment-variables": {
+      "SSE_CLIENT_SSE_SERVER_URL": "#SSE_SERVER_URL#",
+      "SSE_CLIENT_TA_URL": "#TA_URL#",
+      "SSE_CLIENT_KEY_G": "#KEY_G#",
+      "SSE_CLIENT_KENC": "#KENC#",
+      "SSE_CLIENT_SALT_VALUE": "#SALT_VALUE#",
+      "SSE_CLIENT_IV_VALUE": "#IV_VALUE#"
+    },
+    "ports": {},
+    "inputs": [
+      {
+        "name": "method",
+        "description": "Client method",
+        "type": "string",
+        "matcher": null,
+        "default-value": null,
+        "required": true,
+        "replacement-key": "#METHOD#",
+        "sensitive": null,
+        "command-line-flag": null,
+        "command-line-separator": null,
+        "true-value": null,
+        "false-value": null
+      },
+      {
+        "name": "uri",
+        "description": "Object uri",
+        "type": "string",
+        "matcher": null,
+        "default-value": null,
+        "required": true,
+        "replacement-key": "#URI#",
+        "sensitive": null,
+        "command-line-flag": null,
+        "command-line-separator": null,
+        "true-value": null,
+        "false-value": null
+      },
+      {
+        "name": "type",
+        "description": "Object type",
+        "type": "string",
+        "matcher": null,
+        "default-value": null,
+        "required": true,
+        "replacement-key": "#TYPE#",
+        "sensitive": null,
+        "command-line-flag": null,
+        "command-line-separator": null,
+        "true-value": null,
+        "false-value": null
+      },
+      {
+        "name": "sse-server-url",
+        "description": "SSE server url",
+        "type": "string",
+        "matcher": null,
+        "default-value": "http://sse:8080",
+        "required": true,
+        "replacement-key": "#SSE_SERVER_URL#",
+        "sensitive": null,
+        "command-line-flag": null,
+        "command-line-separator": null,
+        "true-value": null,
+        "false-value": null
+      },
+      {
+        "name": "ta-url",
+        "description": "Trusted Authority url",
+        "type": "string",
+        "matcher": null,
+        "default-value": "http://ta:8000",
+        "required": true,
+        "replacement-key": "#TA_URL#",
+        "sensitive": null,
+        "command-line-flag": null,
+        "command-line-separator": null,
+        "true-value": null,
+        "false-value": null
+      },
+      {
+        "name": "key-g",
+        "description": "Symmetric key, which is shared between users and TA",
+        "type": "string",
+        "matcher": null,
+        "default-value": "123",
+        "required": true,
+        "replacement-key": "#KEY_G#",
+        "sensitive": null,
+        "command-line-flag": null,
+        "command-line-separator": null,
+        "true-value": null,
+        "false-value": null
+      },
+      {
+        "name": "kenc",
+        "description": "Symmetric key, which is shared between users who are allowed to upload/search data",
+        "type": "string",
+        "matcher": null,
+        "default-value": "123",
+        "required": true,
+        "replacement-key": "#KENC#",
+        "sensitive": null,
+        "command-line-flag": null,
+        "command-line-separator": null,
+        "true-value": null,
+        "false-value": null
+      },
+      {
+        "name": "salt-value",
+        "description": "Salt Value",
+        "type": "string",
+        "matcher": null,
+        "default-value": "abc123!?",
+        "required": true,
+        "replacement-key": "#SALT_VALUE#",
+        "sensitive": null,
+        "command-line-flag": null,
+        "command-line-separator": null,
+        "true-value": null,
+        "false-value": null
+      },
+      {
+        "name": "iv-value",
+        "description": "IV Value",
+        "type": "string",
+        "matcher": null,
+        "default-value": "abcdefg",
+        "required": true,
+        "replacement-key": "#IV_VALUE#",
+        "sensitive": null,
+        "command-line-flag": null,
+        "command-line-separator": null,
+        "true-value": null,
+        "false-value": null
+      }
+    ],
+    "outputs": [],
+    "xnat": [
+      {
+        "name": "snet-asclepios-sse-client-scan",
+        "label": "Asclepios SSE Scan Client",
+        "description": "Asclepios SSE Scan Client",
+        "contexts": [
+          "xnat:imageScanData"
+        ],
+        "external-inputs": [
+          {
+            "name": "scan",
+            "description": "Input scan",
+            "type": "Scan",
+            "matcher": null,
+            "default-value": null,
+            "required": true,
+            "replacement-key": null,
+            "sensitive": null,
+            "provides-value-for-command-input": null,
+            "provides-files-for-command-mount": null,
+            "via-setup-command": null,
+            "user-settable": null,
+            "load-children": false
+          }
+        ],
+        "derived-inputs": [
+          {
+            "name": "scan-uri",
+            "description": null,
+            "type": "string",
+            "matcher": null,
+            "default-value": null,
+            "required": true,
+            "replacement-key": null,
+            "sensitive": null,
+            "provides-value-for-command-input": "uri",
+            "provides-files-for-command-mount": null,
+            "user-settable": false,
+            "load-children": false,
+            "derived-from-wrapper-input": "scan",
+            "derived-from-xnat-object-property": "uri",
+            "via-setup-command": null
+          },
+          {
+            "name": "scan-type",
+            "description": null,
+            "type": "string",
+            "matcher": null,
+            "default-value": null,
+            "required": true,
+            "replacement-key": null,
+            "sensitive": null,
+            "provides-value-for-command-input": "type",
+            "provides-files-for-command-mount": null,
+            "user-settable": false,
+            "load-children": false,
+            "derived-from-wrapper-input": "scan",
+            "derived-from-xnat-object-property": "xsiType",
+            "via-setup-command": null
+          }
+        ],
+        "output-handlers": []
+      },
+      {
+        "name": "snet-asclepios-sse-client-subject",
+        "label": "Asclepios SSE Subject Client",
+        "description": "Asclepios SSE Subject Client",
+        "contexts": [
+          "xnat:subjectData"
+        ],
+        "external-inputs": [
+          {
+            "name": "subject",
+            "description": "Input subject",
+            "type": "Subject",
+            "matcher": null,
+            "default-value": null,
+            "required": true,
+            "replacement-key": null,
+            "sensitive": null,
+            "provides-value-for-command-input": null,
+            "provides-files-for-command-mount": null,
+            "via-setup-command": null,
+            "user-settable": null,
+            "load-children": false
+          }
+        ],
+        "derived-inputs": [
+          {
+            "name": "subject-uri",
+            "description": null,
+            "type": "string",
+            "matcher": null,
+            "default-value": null,
+            "required": true,
+            "replacement-key": null,
+            "sensitive": null,
+            "provides-value-for-command-input": "uri",
+            "provides-files-for-command-mount": null,
+            "user-settable": false,
+            "load-children": false,
+            "derived-from-wrapper-input": "subject",
+            "derived-from-xnat-object-property": "uri",
+            "via-setup-command": null
+          },
+          {
+            "name": "subject-type",
+            "description": null,
+            "type": "string",
+            "matcher": null,
+            "default-value": null,
+            "required": true,
+            "replacement-key": null,
+            "sensitive": null,
+            "provides-value-for-command-input": "type",
+            "provides-files-for-command-mount": null,
+            "user-settable": false,
+            "load-children": false,
+            "derived-from-wrapper-input": "subject",
+            "derived-from-xnat-object-property": "xsiType",
+            "via-setup-command": null
+          }
+        ],
+        "output-handlers": []
+      }
+    ],
+    "network": "asclepios",
+    "container-labels": {}
+  }
