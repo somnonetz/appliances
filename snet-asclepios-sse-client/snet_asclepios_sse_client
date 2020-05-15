@@ -53,7 +53,7 @@ execFile(XnatDataClient, ['-u', XNAT_USER, '-p', XNAT_PASS, '-r', `${XNAT_HOST}/
 
     switch(method) {
         case 'upload':
-            const data = { type: type, body: Buffer.from(stdout).toString('base64') };
+            const data = { uri, type, body: Buffer.from(stdout).toString('base64') };
             uploadData(data, uri, SSE_CLIENT_KEY_G, SSE_CLIENT_KENC);
             break;
         default:
