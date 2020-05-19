@@ -2,7 +2,7 @@
 'use strict'
 
 const { execFile } = require('child_process');
-const { uploadData } = require('asclepios-sse-client');
+const { uploadData, deleteData } = require('asclepios-sse-client');
 
 const {
     XNAT_USER,
@@ -55,6 +55,9 @@ execFile(XnatDataClient, ['-u', XNAT_USER, '-p', XNAT_PASS, '-r', `${XNAT_HOST}/
         case 'upload':
             const data = { uri, type, body: Buffer.from(stdout).toString('base64') };
             uploadData(data, uri, SSE_CLIENT_KEY_G, SSE_CLIENT_KENC);
+            break;
+        case 'delete':
+            deleteData(uri, SSE_CLIENT_KEY_G, SSE_CLIENT_KENC);
             break;
         default:
             throw `${method} is not a valid method`
