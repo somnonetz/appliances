@@ -21,10 +21,10 @@
     "inputs": [
       {
         "name": "method",
-        "description": "Client method",
+        "description": "Client method (upload | update | delete)",
         "type": "string",
         "matcher": null,
-        "default-value": null,
+        "default-value": "upload",
         "required": true,
         "replacement-key": "#METHOD#",
         "sensitive": null,
