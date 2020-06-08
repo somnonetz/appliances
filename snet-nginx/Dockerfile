@@ -27,3 +27,5 @@ RUN apk add --no-cache wget ca-certificates && \
 
 ADD entrypoint.sh /usr/local/bin/entrypoint.sh
 ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
+CMD ["nginx", "-g", "daemon off;"]
+
