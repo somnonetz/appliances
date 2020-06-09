@@ -4,8 +4,6 @@ ARG COPLA_EDITOR_VER=0.2.0
 ARG ASCLEPIOS_SEARCH_VER=0.1.6
 ARG WEB_ROOT=/var/www
 
-RUN rm /etc/nginx/conf.d/default.conf
-COPY nginx.conf /etc/nginx
 
 RUN apk add --no-cache wget ca-certificates && \
     update-ca-certificates && \
@@ -24,6 +22,10 @@ RUN apk add --no-cache wget ca-certificates && \
     mv sn-webrtc /var/www/copla-editor/sn-webrtc && \
     rm -f sn-webrtc-${COPLA_EDITOR_VER}.tar.gz && \
     apk del wget
+
+RUN rm /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/nginx.conf
+COPY xnat.conf /etc/nginx/conf.d/xnat.conf
 
 ADD entrypoint.sh /usr/local/bin/entrypoint.sh
 ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
