@@ -1,7 +1,7 @@
 FROM nginx:1.13-alpine-perl
 
-ARG COPLA_EDITOR_VER=0.2.0
-ARG ASCLEPIOS_SEARCH_VER=0.1.7
+ARG COPLA_EDITOR_VER=0.2.1
+ARG ASCLEPIOS_SEARCH_VER=0.1.8
 ARG WEB_ROOT=/var/www
 
 
@@ -16,12 +16,7 @@ RUN apk add --no-cache wget ca-certificates && \
     wget https://github.com/somnonetz/copla-editor/releases/download/v${COPLA_EDITOR_VER}/sn-editor-${COPLA_EDITOR_VER}.tar.gz && \
     tar -zxf sn-editor-${COPLA_EDITOR_VER}.tar.gz && \
     mv sn-editor ${WEB_ROOT}/copla-editor/sn-editor && \
-    rm -f sn-editor-${COPLA_EDITOR_VER}.tar.gz && \
-    wget https://github.com/somnonetz/copla-editor/releases/download/v${COPLA_EDITOR_VER}/sn-webrtc-${COPLA_EDITOR_VER}.tar.gz && \
-    tar -zxf sn-webrtc-${COPLA_EDITOR_VER}.tar.gz && \
-    mv sn-webrtc ${WEB_ROOT}/copla-editor/sn-webrtc && \
-    rm -f sn-webrtc-${COPLA_EDITOR_VER}.tar.gz && \
-    apk del wget
+    rm -f sn-editor-${COPLA_EDITOR_VER}.tar.gz
 
 RUN rm /etc/nginx/conf.d/default.conf
 COPY nginx.conf /etc/nginx/nginx.conf

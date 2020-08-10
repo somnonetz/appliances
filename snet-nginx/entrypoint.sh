@@ -3,9 +3,14 @@
 set -e
 
 find /var/www/copla-editor/sn-editor/static/js/ -type f -exec sed -i "s,\${XNAT_API_URL},${XNAT_API_URL},g" {} \;
-sed -i "s,\${TA_BASE_URL},${TA_BASE_URL},g" /var/www/asclepios-search/lib/sse.js
-sed -i "s,\${SSE_SERVER_BASE_URL},${SSE_SERVER_BASE_URL},g" /var/www/asclepios-search/lib/sse.js
-sed -i "s,\${SALT_VALUE},${SALT_VALUE},g" /var/www/asclepios-search/lib/sse.js
-sed -i "s,\${IV_VALUE},${IV_VALUE},g" /var/www/asclepios-search/lib/sse.js
+find /var/www/copla-editor/sn-editor/static/js/ -type f -exec sed -i "s,\${SSE_CLIENT_SSE_SERVER_URL},${SSE_CLIENT_SSE_SERVER_URL},g" {} \;
+find /var/www/copla-editor/sn-editor/static/js/ -type f -exec sed -i "s,\${SSE_CLIENT_TA_URL},${SSE_CLIENT_TA_URL},g" {} \; 
+find /var/www/copla-editor/sn-editor/static/js/ -type f -exec sed -i "s,\${SSE_CLIENT_SALT_VALUE},${SSE_CLIENT_SALT_VALUE},g" {} \;
+find /var/www/copla-editor/sn-editor/static/js/ -type f -exec sed -i "s,\${SSE_CLIENT_IV_VALUE},${SSE_CLIENT_IV_VALUE},g" {} \;
+
+sed -i "s,\${SSE_CLIENT_SSE_SERVER_URL},${SSE_CLIENT_SSE_SERVER_URL},g" /var/www/asclepios-search/lib/sse.js;
+sed -i "s,\${SSE_CLIENT_TA_URL},${SSE_CLIENT_TA_URL},g" /var/www/asclepios-search/lib/sse.js; 
+sed -i "s,\${SSE_CLIENT_SALT_VALUE},${SSE_CLIENT_SALT_VALUE},g" /var/www/asclepios-search/lib/sse.js;
+sed -i "s,\${SSE_CLIENT_IV_VALUE},${SSE_CLIENT_IV_VALUE},g" /var/www/asclepios-search/lib/sse.js;
 
 exec "$@"
