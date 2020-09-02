@@ -12,5 +12,7 @@ sed -i "s,\${SSE_CLIENT_SSE_SERVER_URL},${SSE_CLIENT_SSE_SERVER_URL},g" /var/www
 sed -i "s,\${SSE_CLIENT_TA_URL},${SSE_CLIENT_TA_URL},g" /var/www/asclepios-search/lib/sse.js; 
 sed -i "s,\${SSE_CLIENT_SALT_VALUE},${SSE_CLIENT_SALT_VALUE},g" /var/www/asclepios-search/lib/sse.js;
 sed -i "s,\${SSE_CLIENT_IV_VALUE},${SSE_CLIENT_IV_VALUE},g" /var/www/asclepios-search/lib/sse.js;
+sed -i "s,\${KEYCLOAK_HOST},${KEYCLOAK_HOST},g" /var/www/asclepios-search/index.html;
+sed -i "s,\${KEYCLOAK_HOST},${KEYCLOAK_HOST},g" /var/www/asclepios-search/keycloak.json;
 
 exec "$@"
