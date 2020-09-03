@@ -1,28 +1,24 @@
+FROM node:lts-alpine AS builder
+
+ARG ASCLEPIOS_SEARCH_VER=2794558a684f2e75c6026fa3c0c0f49b41b87e2e
+ARG COPLA_EDITOR_VER=45575c7cbaa16e56ccb7dd69ab9bb47ddb815276
+
+RUN apk add --no-cache git ca-certificates
+RUN git clone https://github.com/somnonetz/snet-asclepios-search /tmp/asclepios-search && cd /tmp/asclepios-search && git checkout ${ASCLEPIOS_SEARCH_VER}
+RUN git clone https://github.com/somnonetz/copla-editor.git /tmp/copla-editor && cd /tmp/copla-editor && git checkout ${COPLA_EDITOR_VER}
+RUN cd /tmp/copla-editor/sn-editor && npm install && npm run build
+
 FROM nginx:1.13-alpine-perl
 
-ARG COPLA_EDITOR_VER=0.2.2
-ARG ASCLEPIOS_SEARCH_VER=0.2.0
 ARG WEB_ROOT=/var/www
 
-
-RUN apk add --no-cache wget ca-certificates && \
-    update-ca-certificates && \
-    mkdir -p ${WEB_ROOT} && \
-    wget https://github.com/somnonetz/snet-asclepios-search/archive/v${ASCLEPIOS_SEARCH_VER}/v${ASCLEPIOS_SEARCH_VER}.tar.gz && \
-    tar -zxf v${ASCLEPIOS_SEARCH_VER}.tar.gz && \
-    mv  snet-asclepios-search-${ASCLEPIOS_SEARCH_VER} ${WEB_ROOT}/asclepios-search && \
-    rm -f v${ASCLEPIOS_SEARCH_VER}.tar.gz && \
-    mkdir -p ${WEB_ROOT}/copla-editor && \
-    wget https://github.com/somnonetz/copla-editor/releases/download/v${COPLA_EDITOR_VER}/sn-editor-${COPLA_EDITOR_VER}.tar.gz && \
-    tar -zxf sn-editor-${COPLA_EDITOR_VER}.tar.gz && \
-    mv sn-editor ${WEB_ROOT}/copla-editor/sn-editor && \
-    rm -f sn-editor-${COPLA_EDITOR_VER}.tar.gz
+COPY --from=builder /tmp/asclepios-search ${WEB_ROOT}/asclepios-search
+COPY --from=builder /tmp/copla-editor/sn-editor/build ${WEB_ROOT}/copla-editor/sn-editor
 
 RUN rm /etc/nginx/conf.d/default.conf
 COPY nginx.conf /etc/nginx/nginx.conf
-COPY xnat.conf /etc/nginx/conf.d/xnat.conf
+COPY snet.conf /etc/nginx/conf.d/snet.conf
 
 ADD entrypoint.sh /usr/local/bin/entrypoint.sh
 ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
 CMD ["nginx", "-g", "daemon off;"]
-
