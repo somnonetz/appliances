@@ -1,11 +1,12 @@
 FROM node:lts-alpine AS builder
 
 ARG ASCLEPIOS_SEARCH_VER=2794558a684f2e75c6026fa3c0c0f49b41b87e2e
-ARG COPLA_EDITOR_VER=45575c7cbaa16e56ccb7dd69ab9bb47ddb815276
+ARG COPLA_EDITOR_VER=ef9bd437976a87601c6f7654912f48309a8828f0
 
 RUN apk add --no-cache git ca-certificates
 RUN git clone https://github.com/somnonetz/snet-asclepios-search /tmp/asclepios-search && cd /tmp/asclepios-search && git checkout ${ASCLEPIOS_SEARCH_VER}
 RUN git clone https://github.com/somnonetz/copla-editor.git /tmp/copla-editor && cd /tmp/copla-editor && git checkout ${COPLA_EDITOR_VER}
+COPY sn-editor-build.env /tmp/copla-editor/sn-editor/.env
 RUN cd /tmp/copla-editor/sn-editor && npm install && npm run build
 
 FROM nginx:1.13-alpine-perl
