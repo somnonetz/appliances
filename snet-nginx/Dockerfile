@@ -9,7 +9,7 @@ RUN git clone https://github.com/somnonetz/copla-editor.git /tmp/copla-editor &&
 COPY sn-editor-build.env /tmp/copla-editor/sn-editor/.env
 RUN cd /tmp/copla-editor/sn-editor && npm install && npm run build
 
-FROM nginx:1.13-alpine-perl
+FROM nginx:1.18-alpine-perl
 
 ARG WEB_ROOT=/var/www
 
