@@ -1,13 +1,15 @@
 FROM node:lts-alpine AS builder
 
-ARG ASCLEPIOS_SEARCH_VER=9510776914e80a598805ed2b7dd5322bc938aef5
-ARG COPLA_EDITOR_VER=ef9bd437976a87601c6f7654912f48309a8828f0
+ARG ASCLEPIOS_SEARCH_VER=905331262c6fe284faaf15378ffd3974c63af3ac
+ARG COPLA_EDITOR_VER=de15827f2ed85f03dd6845bbcd0c077dd39ad11b
 
 RUN apk add --no-cache git ca-certificates
-RUN git clone https://github.com/somnonetz/snet-asclepios-search /tmp/asclepios-search && cd /tmp/asclepios-search && git checkout ${ASCLEPIOS_SEARCH_VER}
-RUN git clone https://github.com/somnonetz/copla-editor.git /tmp/copla-editor && cd /tmp/copla-editor && git checkout ${COPLA_EDITOR_VER}
+
+RUN git clone https://github.com/somnonetz/snet-asclepios-search /tmp/asclepios-search && cd /tmp/asclepios-search && git checkout ${ASCLEPIOS_SEARCH_VER} && npm ci && npm run js-build && npm run css-build
+
+RUN git clone https://github.com/somnonetz/copla-editor.git /tmp/copla-editor
 COPY sn-editor-build.env /tmp/copla-editor/sn-editor/.env
-RUN cd /tmp/copla-editor/sn-editor && npm install && npm run build
+RUN cd /tmp/copla-editor/sn-editor && git checkout ${COPLA_EDITOR_VER} && npm ci && npm run build
 
 FROM nginx:1.18-alpine-perl
 
