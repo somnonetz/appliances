@@ -68,7 +68,7 @@ RUN wget https://bitbucket.org/xnatx/ldap-auth-plugin/downloads/xnat-ldap-auth-p
 RUN wget https://bitbucket.org/xnatdev/container-service/downloads/containers-${XNAT_CONTAINER_SERVICE_VER}-fat.jar && \
     mv containers-${XNAT_CONTAINER_SERVICE_VER}-fat.jar ${XNAT_HOME}/plugins
 
-# install snet-plugin
+# install snet-asclepios-plugin
 
 RUN wget https://github.com/somnonetz/snet-asclepios-plugin/releases/download/v${SNET_ASCLEPIOS_PLUGIN_VER}/snet-asclepios-plugin-${SNET_ASCLEPIOS_PLUGIN_VER}.jar && \
     mv snet-asclepios-plugin-${SNET_ASCLEPIOS_PLUGIN_VER}.jar ${XNAT_HOME}/plugins
