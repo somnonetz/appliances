@@ -15,6 +15,7 @@ sed -i "s,\${SSE_CLIENT_TA_URL},${SSE_CLIENT_TA_URL},g" ${CATALINA_HOME}/webapps
 sed -i "s,\${SSE_CLIENT_SALT_VALUE},${SSE_CLIENT_SALT_VALUE},g" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
 sed -i "s,\${SSE_CLIENT_IV_VALUE},${SSE_CLIENT_IV_VALUE},g" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
 sed -i "s,\${KEYCLOAK_HOST},${KEYCLOAK_HOST},g" ${CATALINA_HOME}/webapps/asclepios-search/index.html;
+sed -i "s,\${KEYCLOAK_HOST},${KEYCLOAK_HOST},g" ${CATALINA_HOME}/webapps/asclepios-search/create.html;
 sed -i "s,\${KEYCLOAK_HOST},${KEYCLOAK_HOST},g" ${CATALINA_HOME}/webapps/ROOT/keycloak.json;
 
 
