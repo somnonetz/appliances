@@ -17,6 +17,7 @@ FROM tomcat:7-jre8-alpine
 
 ARG XNAT_VER=1.7.6
 ARG XNAT_LDAP_AUTH_PLUGIN_VER=1.0.0
+ARG XNAT_OPENID_AUTH_PLUGIN_VER=1.0.2
 ARG XNAT_CONTAINER_SERVICE_VER=2.1.1-SNAPSHOT
 ARG SNET_ASCLEPIOS_PLUGIN_VER=0.1.0
 ARG XNAT_ROOT=/data/xnat
@@ -62,6 +63,10 @@ COPY keycloak.json ${CATALINA_HOME}/webapps/ROOT/keycloak.json
 
 RUN wget https://bitbucket.org/xnatx/ldap-auth-plugin/downloads/xnat-ldap-auth-plugin-${XNAT_LDAP_AUTH_PLUGIN_VER}.jar && \
     mv xnat-ldap-auth-plugin-${XNAT_LDAP_AUTH_PLUGIN_VER}.jar ${XNAT_HOME}/plugins
+
+# install openid auth provider plugin
+RUN wget https://github.com/Australian-Imaging-Service/xnat-openid-auth-plugin/releases/download/1.0.2/xnat-openid-auth-plugin-all-${XNAT_OPENID_AUTH_PLUGIN_VER}.jar && \
+    mv xnat-openid-auth-plugin-all-${XNAT_OPENID_AUTH_PLUGIN_VER}.jar ${XNAT_HOME}/plugins
 
 # install container service plugin
 
