@@ -3,7 +3,7 @@ FROM node:lts-alpine AS builder
 # build webapps
 
 ARG ASCLEPIOS_SEARCH_VER=be2a6c6ee4ec2063fc6e83e053c31c62ff4358fe
-ARG COPLA_EDITOR_VER=9aea53d441ff75c172a878bbb9b5e4118201c7c3
+ARG COPLA_EDITOR_VER=d5b4cf310a81213b4290d3e507e725c63f94c7bc
 
 RUN apk add --no-cache git ca-certificates
 
