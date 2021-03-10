@@ -15,10 +15,10 @@ RUN cd /tmp/copla-editor/sn-editor && git checkout ${COPLA_EDITOR_VER} && npm ci
 
 FROM tomcat:7-jre8-alpine
 
-ARG XNAT_VER=1.7.6
-ARG XNAT_LDAP_AUTH_PLUGIN_VER=1.0.0
+ARG XNAT_VER=1.8.0
+# ARG XNAT_LDAP_AUTH_PLUGIN_VER=1.0.0
 ARG XNAT_OPENID_AUTH_PLUGIN_VER=1.0.2
-ARG XNAT_CONTAINER_SERVICE_VER=2.1.1-SNAPSHOT
+# ARG XNAT_CONTAINER_SERVICE_VER=2.1.1-SNAPSHOT
 ARG SNET_ASCLEPIOS_PLUGIN_VER=0.1.0
 ARG XNAT_ROOT=/data/xnat
 ARG XNAT_HOME=/data/xnat/home
@@ -61,8 +61,8 @@ COPY keycloak.json ${CATALINA_HOME}/webapps/ROOT/keycloak.json
 
 # install ldap auth provider plugin
 
-RUN wget https://bitbucket.org/xnatx/ldap-auth-plugin/downloads/xnat-ldap-auth-plugin-${XNAT_LDAP_AUTH_PLUGIN_VER}.jar && \
-    mv xnat-ldap-auth-plugin-${XNAT_LDAP_AUTH_PLUGIN_VER}.jar ${XNAT_HOME}/plugins
+# RUN wget https://bitbucket.org/xnatx/ldap-auth-plugin/downloads/xnat-ldap-auth-plugin-${XNAT_LDAP_AUTH_PLUGIN_VER}.jar && \
+#    mv xnat-ldap-auth-plugin-${XNAT_LDAP_AUTH_PLUGIN_VER}.jar ${XNAT_HOME}/plugins
 
 # install openid auth provider plugin
 RUN wget https://github.com/Australian-Imaging-Service/xnat-openid-auth-plugin/releases/download/1.0.2/xnat-openid-auth-plugin-all-${XNAT_OPENID_AUTH_PLUGIN_VER}.jar && \
@@ -70,8 +70,8 @@ RUN wget https://github.com/Australian-Imaging-Service/xnat-openid-auth-plugin/r
 
 # install container service plugin
 
-RUN wget https://bitbucket.org/xnatdev/container-service/downloads/containers-${XNAT_CONTAINER_SERVICE_VER}-fat.jar && \
-    mv containers-${XNAT_CONTAINER_SERVICE_VER}-fat.jar ${XNAT_HOME}/plugins
+# RUN wget https://bitbucket.org/xnatdev/container-service/downloads/containers-${XNAT_CONTAINER_SERVICE_VER}-fat.jar && \
+#    mv containers-${XNAT_CONTAINER_SERVICE_VER}-fat.jar ${XNAT_HOME}/plugins
 
 # install snet-asclepios-plugin
 
