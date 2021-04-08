@@ -14,10 +14,45 @@ sed -i "s,\${SSE_CLIENT_SSE_SERVER_URL},${SSE_CLIENT_SSE_SERVER_URL},g" ${CATALI
 sed -i "s,\${SSE_CLIENT_TA_URL},${SSE_CLIENT_TA_URL},g" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js; 
 sed -i "s,\${SSE_CLIENT_SALT_VALUE},${SSE_CLIENT_SALT_VALUE},g" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
 sed -i "s,\${SSE_CLIENT_IV_VALUE},${SSE_CLIENT_IV_VALUE},g" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
+sed -i "s,\${SSE_CLIENT_TA_URL},${SSE_CLIENT_TA_URL},g" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
+sed -i "s,\${SSE_CLIENT_SSE_SERVER_URL},${SSE_CLIENT_SSE_SERVER_URL},g" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
+sed -i "s,\${SSE_CLIENT_SALT},${SSE_CLIENT_SALT},g" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
+sed -i "s,\${SSE_CLIENT_IV},${SSE_CLIENT_IV},g" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
+sed -i "s,\${SSE_CLIENT_ITER},${SSE_CLIENT_ITER},g" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
+sed -i "s,\${SSE_CLIENT_KS},${SSE_CLIENT_KS},g" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
+sed -i "s,\${SSE_CLIENT_TS},${SSE_CLIENT_TS},g" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
+sed -i "s,\${SSE_CLIENT_HASH_LEN},${SSE_CLIENT_HASH_LEN},g" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
+sed -i "s,\${SSE_CLIENT_CHUNK_SIZE},${SSE_CLIENT_CHUNK_SIZE},g" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
+sed -i "s,\${SSE_CLIENT_NO_CHUNKS_PER_UPLOAD},${SSE_CLIENT_NO_CHUNKS_PER_UPLOAD},g" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
+sed -i "s,\${SSE_CLIENT_SALT_TA},${SSE_CLIENT_SALT_TA},g" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
+sed -i "s,\${SSE_CLIENT_IV_TA},${SSE_CLIENT_IV_TA},g" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
+sed -i "s,\${SSE_CLIENT_ITER_TA},${SSE_CLIENT_ITER_TA},g" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
+sed -i "s,\${SSE_CLIENT_KS_TA},${SSE_CLIENT_KS_TA},g" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
+sed -i "s,\${SSE_CLIENT_TS_TA},${SSE_CLIENT_TS_TA},g" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
+sed -i "s,\${SSE_CLIENT_SGX_ENABLE},${SSE_CLIENT_SGX_ENABLE},g" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
+sed -i "s,\${SSE_CLIENT_CP_ABE_URL},${SSE_CLIENT_CP_ABE_URL},g" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
+
 sed -i "s,\${KEYCLOAK_HOST},${KEYCLOAK_HOST},g" ${CATALINA_HOME}/webapps/asclepios-search/index.html;
 sed -i "s,\${KEYCLOAK_HOST},${KEYCLOAK_HOST},g" ${CATALINA_HOME}/webapps/asclepios-search/create.html;
 sed -i "s,\${KEYCLOAK_HOST},${KEYCLOAK_HOST},g" ${CATALINA_HOME}/webapps/ROOT/keycloak.json;
 
+# "s,\${SSE_CLIENT_TA_URL},${SSE_CLIENT_TA_URL},g" 
+# "s,\${SSE_CLIENT_SSE_SERVER_URL},${SSE_CLIENT_SSE_SERVER_URL},g" 
+# "s,\${SSE_CLIENT_SALT},${SSE_CLIENT_SALT},g" 
+# "s,\${SSE_CLIENT_IV},${SSE_CLIENT_IV},g" 
+# "s,\${SSE_CLIENT_ITER},${SSE_CLIENT_ITER},g" 
+# "s,\${SSE_CLIENT_KS},${SSE_CLIENT_KS},g" 
+# "s,\${SSE_CLIENT_TS},${SSE_CLIENT_TS},g" 
+# "s,\${SSE_CLIENT_HASH_LEN},${SSE_CLIENT_HASH_LEN},g" 
+# "s,\${SSE_CLIENT_CHUNK_SIZE},${SSE_CLIENT_CHUNK_SIZE},g" 
+# "s,\${SSE_CLIENT_NO_CHUNKS_PER_UPLOAD},${SSE_CLIENT_NO_CHUNKS_PER_UPLOAD},g" 
+# "s,\${SSE_CLIENT_SALT_TA},${SSE_CLIENT_SALT_TA},g" 
+# "s,\${SSE_CLIENT_IV_TA},${SSE_CLIENT_IV_TA},g" 
+# "s,\${SSE_CLIENT_ITER_TA},${SSE_CLIENT_ITER_TA},g" 
+# "s,\${SSE_CLIENT_KS_TA},${SSE_CLIENT_KS_TA},g" 
+# "s,\${SSE_CLIENT_TS_TA},${SSE_CLIENT_TS_TA},g" 
+# "s,\${SSE_CLIENT_SGX_ENABLE},${SSE_CLIENT_SGX_ENABLE},g" 
+# "s,\${SSE_CLIENT_CP_ABE_URL},${SSE_CLIENT_CP_ABE_URL},g" 
 
 # generate xnat config
 if [ ! -f $XNAT_HOME/config/xnat-conf.properties ]; then
