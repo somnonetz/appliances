@@ -5,54 +5,63 @@ set -e
 cmd="$@"
 
 find ${CATALINA_HOME}/webapps/sn-editor/static/js/ -type f -exec sed -i "s,\${XNAT_API_URL},${XNAT_API_URL},g" {} \;
-find ${CATALINA_HOME}/webapps/sn-editor/static/js/ -type f -exec sed -i "s,\${SSE_CLIENT_SSE_SERVER_URL},${SSE_CLIENT_SSE_SERVER_URL},g" {} \;
-find ${CATALINA_HOME}/webapps/sn-editor/static/js/ -type f -exec sed -i "s,\${SSE_CLIENT_TA_URL},${SSE_CLIENT_TA_URL},g" {} \; 
-find ${CATALINA_HOME}/webapps/sn-editor/static/js/ -type f -exec sed -i "s,\${SSE_CLIENT_SALT_VALUE},${SSE_CLIENT_SALT_VALUE},g" {} \;
-find ${CATALINA_HOME}/webapps/sn-editor/static/js/ -type f -exec sed -i "s,\${SSE_CLIENT_IV_VALUE},${SSE_CLIENT_IV_VALUE},g" {} \;
+find ${CATALINA_HOME}/webapps/sn-editor/static/js/ -type f -exec sed -i "s|ta_url|$TA_URL|g" {} \;
+find ${CATALINA_HOME}/webapps/sn-editor/static/js/ -type f -exec sed -i "s|sse_url|$SSE_URL|g" {} \;
+find ${CATALINA_HOME}/webapps/sn-editor/static/js/ -type f -exec sed -i "s|salt_value|$SALT|g" {} \;
+find ${CATALINA_HOME}/webapps/sn-editor/static/js/ -type f -exec sed -i "s|iv_value|$IV|g" {} \;
+find ${CATALINA_HOME}/webapps/sn-editor/static/js/ -type f -exec sed -i "s|iter_value|$ITER|g" {} \;
+find ${CATALINA_HOME}/webapps/sn-editor/static/js/ -type f -exec sed -i "s|ks_value|$KS|g" {} \;
+find ${CATALINA_HOME}/webapps/sn-editor/static/js/ -type f -exec sed -i "s|ts_value|$TS|g" {} \;
+find ${CATALINA_HOME}/webapps/sn-editor/static/js/ -type f -exec sed -i "s|mode_value|$MODE|g" {} \;
+find ${CATALINA_HOME}/webapps/sn-editor/static/js/ -type f -exec sed -i "s|adata_value|$ADATA|g" {} \;
+find ${CATALINA_HOME}/webapps/sn-editor/static/js/ -type f -exec sed -i "s|adata_len_value|$ADATA_LEN|g" {} \;
+find ${CATALINA_HOME}/webapps/sn-editor/static/js/ -type f -exec sed -i "s|hash_length_value|$HASH_LEN|g" {} \;
+find ${CATALINA_HOME}/webapps/sn-editor/static/js/ -type f -exec sed -i "s|chunk_size_value|$CHUNK_SIZE|g" {} \;
+find ${CATALINA_HOME}/webapps/sn-editor/static/js/ -type f -exec sed -i "s|no_chunks_per_upload_value|$NO_CHUNKS_PER_UPLOAD|g" {} \;
+find ${CATALINA_HOME}/webapps/sn-editor/static/js/ -type f -exec sed -i "s|salt_ta_value|$SALT_TA|g" {} \;
+find ${CATALINA_HOME}/webapps/sn-editor/static/js/ -type f -exec sed -i "s|iv_ta_value|$IV_TA|g" {} \;
+find ${CATALINA_HOME}/webapps/sn-editor/static/js/ -type f -exec sed -i "s|iter_ta_value|$ITER_TA|g" {} \;
+find ${CATALINA_HOME}/webapps/sn-editor/static/js/ -type f -exec sed -i "s|ks_ta_value|$KS_TA|g" {} \;
+find ${CATALINA_HOME}/webapps/sn-editor/static/js/ -type f -exec sed -i "s|ts_ta_value|$TS_TA|g" {} \;
+find ${CATALINA_HOME}/webapps/sn-editor/static/js/ -type f -exec sed -i "s|mode_ta_value|$MODE_TA|g" {} \;
+find ${CATALINA_HOME}/webapps/sn-editor/static/js/ -type f -exec sed -i "s|adata_ta_value|$ADATA_TA|g" {} \;
+find ${CATALINA_HOME}/webapps/sn-editor/static/js/ -type f -exec sed -i "s|adata_len_ta_value|$ADATA_LEN_TA|g" {} \;
+find ${CATALINA_HOME}/webapps/sn-editor/static/js/ -type f -exec sed -i "s|sgx_enable_value|$SGX_ENABLE|g" {} \;
+find ${CATALINA_HOME}/webapps/sn-editor/static/js/ -type f -exec sed -i "s|cp_abe_url|$CP_ABE_URL|g" {} \;
+find ${CATALINA_HOME}/webapps/sn-editor/static/js/ -type f -exec sed -i "s|debug_value|$DEBUG|g" {} \;
+find ${CATALINA_HOME}/webapps/sn-editor/static/js/ -type f -exec sed -i "s|auth_value|$AUTH|g" {} \;
+find ${CATALINA_HOME}/webapps/sn-editor/static/js/ -type f -exec sed -i "s|small_file_value|$SMALL_FILE|g" {} \;
 
-sed -i "s,\${SSE_CLIENT_SSE_SERVER_URL},${SSE_CLIENT_SSE_SERVER_URL},g" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
-sed -i "s,\${SSE_CLIENT_TA_URL},${SSE_CLIENT_TA_URL},g" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js; 
-sed -i "s,\${SSE_CLIENT_SALT_VALUE},${SSE_CLIENT_SALT_VALUE},g" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
-sed -i "s,\${SSE_CLIENT_IV_VALUE},${SSE_CLIENT_IV_VALUE},g" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
-sed -i "s,\${SSE_CLIENT_TA_URL},${SSE_CLIENT_TA_URL},g" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
-sed -i "s,\${SSE_CLIENT_SSE_SERVER_URL},${SSE_CLIENT_SSE_SERVER_URL},g" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
-sed -i "s,\${SSE_CLIENT_SALT},${SSE_CLIENT_SALT},g" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
-sed -i "s,\${SSE_CLIENT_IV},${SSE_CLIENT_IV},g" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
-sed -i "s,\${SSE_CLIENT_ITER},${SSE_CLIENT_ITER},g" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
-sed -i "s,\${SSE_CLIENT_KS},${SSE_CLIENT_KS},g" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
-sed -i "s,\${SSE_CLIENT_TS},${SSE_CLIENT_TS},g" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
-sed -i "s,\${SSE_CLIENT_HASH_LEN},${SSE_CLIENT_HASH_LEN},g" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
-sed -i "s,\${SSE_CLIENT_CHUNK_SIZE},${SSE_CLIENT_CHUNK_SIZE},g" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
-sed -i "s,\${SSE_CLIENT_NO_CHUNKS_PER_UPLOAD},${SSE_CLIENT_NO_CHUNKS_PER_UPLOAD},g" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
-sed -i "s,\${SSE_CLIENT_SALT_TA},${SSE_CLIENT_SALT_TA},g" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
-sed -i "s,\${SSE_CLIENT_IV_TA},${SSE_CLIENT_IV_TA},g" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
-sed -i "s,\${SSE_CLIENT_ITER_TA},${SSE_CLIENT_ITER_TA},g" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
-sed -i "s,\${SSE_CLIENT_KS_TA},${SSE_CLIENT_KS_TA},g" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
-sed -i "s,\${SSE_CLIENT_TS_TA},${SSE_CLIENT_TS_TA},g" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
-sed -i "s,\${SSE_CLIENT_SGX_ENABLE},${SSE_CLIENT_SGX_ENABLE},g" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
-sed -i "s,\${SSE_CLIENT_CP_ABE_URL},${SSE_CLIENT_CP_ABE_URL},g" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
+sed -i -e "s|ta_url|$TA_URL|" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
+sed -i -e "s|sse_url|$SSE_URL|" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
+sed -i -e "s|salt_value|$SALT|" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
+sed -i -e "s|iv_value|$IV|" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
+sed -i -e "s|iter_value|$ITER|" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
+sed -i -e "s|ks_value|$KS|" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
+sed -i -e "s|ts_value|$TS|" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
+sed -i -e "s|mode_value|$MODE|" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
+sed -i -e "s|adata_value|$ADATA|" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
+sed -i -e "s|adata_len_value|$ADATA_LEN|" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
+sed -i -e "s|hash_length_value|$HASH_LEN|" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
+sed -i -e "s|chunk_size_value|$CHUNK_SIZE|" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
+sed -i -e "s|no_chunks_per_upload_value|$NO_CHUNKS_PER_UPLOAD|" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
+sed -i -e "s|salt_ta_value|$SALT_TA|" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
+sed -i -e "s|iv_ta_value|$IV_TA|" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
+sed -i -e "s|iter_ta_value|$ITER_TA|" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
+sed -i -e "s|ks_ta_value|$KS_TA|" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
+sed -i -e "s|ts_ta_value|$TS_TA|" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
+sed -i -e "s|mode_ta_value|$MODE_TA|" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
+sed -i -e "s|adata_ta_value|$ADATA_TA|" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
+sed -i -e "s|adata_len_ta_value|$ADATA_LEN_TA|" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
+sed -i -e "s|sgx_enable_value|$SGX_ENABLE|" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
+sed -i -e "s|cp_abe_url|$CP_ABE_URL|" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
+sed -i -e "s|debug_value|$DEBUG|" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
+sed -i -e "s|auth_value|$AUTH|" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
+sed -i -e "s|small_file_value|$SMALL_FILE|" ${CATALINA_HOME}/webapps/asclepios-search/lib/sse.js;
 
 sed -i "s,\${KEYCLOAK_HOST},${KEYCLOAK_HOST},g" ${CATALINA_HOME}/webapps/asclepios-search/index.html;
 sed -i "s,\${KEYCLOAK_HOST},${KEYCLOAK_HOST},g" ${CATALINA_HOME}/webapps/asclepios-search/create.html;
 sed -i "s,\${KEYCLOAK_HOST},${KEYCLOAK_HOST},g" ${CATALINA_HOME}/webapps/ROOT/keycloak.json;
-
-# "s,\${SSE_CLIENT_TA_URL},${SSE_CLIENT_TA_URL},g" 
-# "s,\${SSE_CLIENT_SSE_SERVER_URL},${SSE_CLIENT_SSE_SERVER_URL},g" 
-# "s,\${SSE_CLIENT_SALT},${SSE_CLIENT_SALT},g" 
-# "s,\${SSE_CLIENT_IV},${SSE_CLIENT_IV},g" 
-# "s,\${SSE_CLIENT_ITER},${SSE_CLIENT_ITER},g" 
-# "s,\${SSE_CLIENT_KS},${SSE_CLIENT_KS},g" 
-# "s,\${SSE_CLIENT_TS},${SSE_CLIENT_TS},g" 
-# "s,\${SSE_CLIENT_HASH_LEN},${SSE_CLIENT_HASH_LEN},g" 
-# "s,\${SSE_CLIENT_CHUNK_SIZE},${SSE_CLIENT_CHUNK_SIZE},g" 
-# "s,\${SSE_CLIENT_NO_CHUNKS_PER_UPLOAD},${SSE_CLIENT_NO_CHUNKS_PER_UPLOAD},g" 
-# "s,\${SSE_CLIENT_SALT_TA},${SSE_CLIENT_SALT_TA},g" 
-# "s,\${SSE_CLIENT_IV_TA},${SSE_CLIENT_IV_TA},g" 
-# "s,\${SSE_CLIENT_ITER_TA},${SSE_CLIENT_ITER_TA},g" 
-# "s,\${SSE_CLIENT_KS_TA},${SSE_CLIENT_KS_TA},g" 
-# "s,\${SSE_CLIENT_TS_TA},${SSE_CLIENT_TS_TA},g" 
-# "s,\${SSE_CLIENT_SGX_ENABLE},${SSE_CLIENT_SGX_ENABLE},g" 
-# "s,\${SSE_CLIENT_CP_ABE_URL},${SSE_CLIENT_CP_ABE_URL},g" 
 
 # generate xnat config
 if [ ! -f $XNAT_HOME/config/xnat-conf.properties ]; then
