@@ -1,8 +1,0 @@
-{
-  "realm": "snet",
-  "auth-server-url": "${KEYCLOAK_HOST}/auth/",
-  "ssl-required": "external",
-  "resource": "calls-gateway",
-  "public-client": true,
-  "confidential-port": 0
-}
