@@ -1,24 +1,34 @@
-FROM tomcat:7-jre8-alpine
+FROM node:lts-alpine AS builder
 
-ARG XNAT_VER=1.7.6
-ARG XNAT_LDAP_AUTH_PLUGIN_VER=1.0.0
-ARG XNAT_CONTAINER_SERVICE_VER=2.1.1-SNAPSHOT
-ARG SNET_PLUGIN_VER=0.1.8
+# build copla-editor
+
+ARG COPLA_EDITOR_VER=538b5e67ffa48d9108997be09b7ad19bcfdf56c5
+
+RUN apk add --no-cache git ca-certificates
+
+RUN git clone https://github.com/somnonetz/copla-editor.git /tmp/copla-editor
+COPY sn-editor-build.env /tmp/copla-editor/sn-editor/.env
+RUN cd /tmp/copla-editor/sn-editor && git checkout ${COPLA_EDITOR_VER} && npm ci && npm run build
+
+FROM tomcat:9-jdk8-openjdk-buster
+
+ARG XNAT_VERSION=1.8.3
 ARG XNAT_ROOT=/data/xnat
 ARG XNAT_HOME=/data/xnat/home
-ARG TOMCAT_XNAT_FOLDER=xnat
+ARG CATALINA_HOME=/usr/local/tomcat
+ARG TOMCAT_XNAT_FOLDER_PATH=${CATALINA_HOME}/webapps/xnat
 
-WORKDIR /tmp
+ARG XNAT_CONTAINER_SERVICE_VER=3.1.0
+ARG SNET_PLUGIN_VER=0.1.9
 
 # install xnat
 
-RUN apk add --no-cache \
-        postgresql-client \
-        wget \
-    && \
-    rm -rf $CATALINA_HOME/webapps/* && \
-    mkdir -p \
-        $CATALINA_HOME/webapps/${TOMCAT_XNAT_FOLDER} \
+ADD entrypoint.sh /usr/local/bin/entrypoint.sh
+
+RUN apt-get update && apt-get install -y postgresql-client wget
+RUN rm -rf ${CATALINA_HOME}/webapps/*
+RUN mkdir -p \
+        ${TOMCAT_XNAT_FOLDER_PATH} \
         ${XNAT_HOME}/config \
         ${XNAT_HOME}/logs \
         ${XNAT_HOME}/plugins \
@@ -28,38 +38,24 @@ RUN apk add --no-cache \
         ${XNAT_ROOT}/cache \
         ${XNAT_ROOT}/ftp \
         ${XNAT_ROOT}/pipeline \
-        ${XNAT_ROOT}/prearchive \
-    && \
-    cd $CATALINA_HOME/webapps/ && \
-    wget https://api.bitbucket.org/2.0/repositories/xnatdev/xnat-web/downloads/xnat-web-${XNAT_VER}.war && \
-    cd ${TOMCAT_XNAT_FOLDER} && \
-    unzip -o ../xnat-web-${XNAT_VER}.war && \
-    rm -f ../xnat-web-${XNAT_VER}.war
+        ${XNAT_ROOT}/prearchive
+RUN wget --no-verbose --output-document=/tmp/xnat-web-${XNAT_VERSION}.war https://api.bitbucket.org/2.0/repositories/xnatdev/xnat-web/downloads/xnat-web-${XNAT_VERSION}.war
+RUN unzip -o -d ${TOMCAT_XNAT_FOLDER_PATH} /tmp/xnat-web-${XNAT_VERSION}.war
+RUN rm -f /tmp/xnat-web-${XNAT_VERSION}.war
 
-# install ldap auth provider plugin
+# install copla-editor
 
-RUN wget https://bitbucket.org/xnatx/ldap-auth-plugin/downloads/xnat-ldap-auth-plugin-${XNAT_LDAP_AUTH_PLUGIN_VER}.jar && \
-    mv xnat-ldap-auth-plugin-${XNAT_LDAP_AUTH_PLUGIN_VER}.jar ${XNAT_HOME}/plugins
+COPY --from=builder /tmp/copla-editor/sn-editor/build ${CATALINA_HOME}/webapps/sn-editor
 
-# install container service plugin
+# install plugins
 
-RUN wget https://bitbucket.org/xnatdev/container-service/downloads/containers-${XNAT_CONTAINER_SERVICE_VER}-fat.jar && \
-    mv containers-${XNAT_CONTAINER_SERVICE_VER}-fat.jar ${XNAT_HOME}/plugins
-
-# install snet-plugin
+RUN wget https://bitbucket.org/xnatdev/container-service/downloads/container-service-${XNAT_CONTAINER_SERVICE_VER}-fat.jar && \
+    mv container-service-${XNAT_CONTAINER_SERVICE_VER}-fat.jar ${XNAT_HOME}/plugins
 
 RUN wget https://github.com/somnonetz/snet-plugin/releases/download/v${SNET_PLUGIN_VER}/snet-plugin-${SNET_PLUGIN_VER}.jar && \
     mv snet-plugin-${SNET_PLUGIN_VER}.jar ${XNAT_HOME}/plugins
 
-# clean up
+EXPOSE 8080
 
-RUN apk del wget
-
-# set up
-
-WORKDIR /
-
-ADD entrypoint.sh /usr/local/bin/entrypoint.sh
 CMD ["entrypoint.sh", "/usr/local/tomcat/bin/catalina.sh", "run"]
 
-EXPOSE 8080
