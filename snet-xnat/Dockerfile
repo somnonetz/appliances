@@ -2,7 +2,7 @@ FROM node:lts-alpine AS builder
 
 # build copla-editor
 
-ARG COPLA_EDITOR_VER=538b5e67ffa48d9108997be09b7ad19bcfdf56c5
+ARG COPLA_EDITOR_VER=d054137919797218e999577694cfd3ab263425a9
 
 RUN apk add --no-cache git ca-certificates
 
@@ -19,7 +19,7 @@ ARG CATALINA_HOME=/usr/local/tomcat
 ARG TOMCAT_XNAT_FOLDER_PATH=${CATALINA_HOME}/webapps/xnat
 
 ARG XNAT_CONTAINER_SERVICE_VER=3.1.0
-ARG SNET_PLUGIN_VER=0.1.9
+ARG SNET_PLUGIN_VER=0.2.0
 
 # install xnat
 
